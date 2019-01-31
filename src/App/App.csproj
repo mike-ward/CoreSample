@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.2</TypeScriptToolsVersion>
+    <AssemblyName>App</AssemblyName>
+    <RootNamespace>App</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="js\app.ts" />
+    <None Remove="js\browser-mock.ts" />
+    <None Remove="js\components\grid\grid-filter.ts" />
+    <None Remove="js\components\grid\grid-sort.ts" />
+    <None Remove="js\components\grid\grid-types.ts" />
+    <None Remove="js\components\grid\grid-view-model.ts" />
+    <None Remove="js\components\grid\grid.ts" />
+    <None Remove="js\components\grid\tests\grid-filter.spec.ts" />
+    <None Remove="js\components\layout\footer.ts" />
+    <None Remove="js\components\layout\header.ts" />
+    <None Remove="js\components\layout\layout.ts" />
+    <None Remove="js\components\layout\nav-bar.ts" />
+    <None Remove="js\components\layout\tests\footer.spec.ts" />
+    <None Remove="js\components\layout\tests\header.spec.ts" />
+    <None Remove="js\components\layout\user-bar.ts" />
+    <None Remove="js\components\loading\loading.ts" />
+    <None Remove="js\components\pages\account\login.ts" />
+    <None Remove="js\components\pages\markets.ts" />
+    <None Remove="js\components\pages\modals.ts" />
+    <None Remove="js\components\pages\news.ts" />
+    <None Remove="js\components\pages\splash.ts" />
+    <None Remove="js\components\pages\stocks.ts" />
+    <None Remove="js\services\app-service.ts" />
+    <None Remove="js\services\compare-service.ts" />
+    <None Remove="js\services\constants-service.ts" />
+    <None Remove="js\services\convert-service.ts" />
+    <None Remove="js\services\css-service.ts" />
+    <None Remove="js\services\dialog-service.ts" />
+    <None Remove="js\services\dom-service.ts" />
+    <None Remove="js\services\download-service.ts" />
+    <None Remove="js\services\export-csv-service.ts" />
+    <None Remove="js\services\export-excel-service.ts" />
+    <None Remove="js\services\modal-service.ts" />
+    <None Remove="js\services\route-service.ts" />
+    <None Remove="js\services\tests\compare-service.spec.ts" />
+    <None Remove="js\typings\browser-mock.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="js\app.ts" />
+    <TypeScriptCompile Include="js\browser-mock.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid-filter.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid-sort.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid-types.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid-view-model.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid.ts" />
+    <TypeScriptCompile Include="js\components\grid\tests\grid-filter.spec.ts" />
+    <TypeScriptCompile Include="js\components\layout\footer.ts" />
+    <TypeScriptCompile Include="js\components\layout\header.ts" />
+    <TypeScriptCompile Include="js\components\layout\layout.ts" />
+    <TypeScriptCompile Include="js\components\layout\nav-bar.ts" />
+    <TypeScriptCompile Include="js\components\layout\tests\footer.spec.ts" />
+    <TypeScriptCompile Include="js\components\layout\tests\header.spec.ts" />
+    <TypeScriptCompile Include="js\components\layout\user-bar.ts" />
+    <TypeScriptCompile Include="js\components\loading\loading.ts" />
+    <TypeScriptCompile Include="js\components\pages\account\login.ts" />
+    <TypeScriptCompile Include="js\components\pages\markets.ts" />
+    <TypeScriptCompile Include="js\components\pages\modals.ts" />
+    <TypeScriptCompile Include="js\components\pages\news.ts" />
+    <TypeScriptCompile Include="js\components\pages\splash.ts" />
+    <TypeScriptCompile Include="js\components\pages\stocks.ts" />
+    <TypeScriptCompile Include="js\services\app-service.ts" />
+    <TypeScriptCompile Include="js\services\compare-service.ts" />
+    <TypeScriptCompile Include="js\services\constants-service.ts" />
+    <TypeScriptCompile Include="js\services\convert-service.ts" />
+    <TypeScriptCompile Include="js\services\css-service.ts" />
+    <TypeScriptCompile Include="js\services\dialog-service.ts" />
+    <TypeScriptCompile Include="js\services\dom-service.ts" />
+    <TypeScriptCompile Include="js\services\download-service.ts" />
+    <TypeScriptCompile Include="js\services\export-csv-service.ts" />
+    <TypeScriptCompile Include="js\services\export-excel-service.ts" />
+    <TypeScriptCompile Include="js\services\modal-service.ts" />
+    <TypeScriptCompile Include="js\services\route-service.ts" />
+    <TypeScriptCompile Include="js\services\tests\compare-service.spec.ts" />
+    <TypeScriptCompile Include="js\typings\browser-mock.d.ts" />
+  </ItemGroup>
+
+  <Target Name="BuildWebAssets" AfterTargets="AfterBuild">
+    <Exec Command="copy /Y js\node_modules\bulma\css\bulma.min.css wwwroot\app.css" />
+    <Exec Command="cd js&#xD;&#xA;npm run build-$(ConfigurationName)" />
+  </Target>
+</Project>
