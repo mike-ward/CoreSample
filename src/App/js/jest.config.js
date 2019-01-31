@@ -8,7 +8,7 @@ module.exports = {
         "module": 'es6',
         "esModuleInterop": true,
         "sourceMap": true,
-        "outDir": './tsout'
+        "outDir": '../tsout'
       }
     }
   }
