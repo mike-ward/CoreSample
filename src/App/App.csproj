@@ -53,10 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Pages\index.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\browser-mock.ts" />
     <TypeScriptCompile Include="js\components\grid\grid-filter.ts" />
