@@ -53,8 +53,7 @@ function startsWith(a: any, b: any) {
 }
 
 function endsWith(a: any, b: any) {
-  const length = b.length;
-  const end = a.substring(length - a.length, length) as string;
+  const end = a.substring(a.length - b.length) as string;
   return compare(end, b);
 }
 

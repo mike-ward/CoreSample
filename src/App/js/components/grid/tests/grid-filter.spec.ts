@@ -13,6 +13,40 @@ test('filter not equals', () => {
   expect(evalFilter(f('companyName', '$neq', 'Overstock.com Inc.', true), gvm()().vrows).length).toBe(1);
 });
 
+test('filter less than', () => {
+  expect(evalFilter(f('latestPrice', '$lt', '25', false), gvm()().vrows).length).toBe(7);
+  expect(evalFilter(f('latestPrice', '$lt', '25', true), gvm()().vrows).length).toBe(3);
+});
+
+test('filter greater than', () => {
+  expect(evalFilter(f('latestPrice', '$gt', '25', false), gvm()().vrows).length).toBe(2);
+  expect(evalFilter(f('latestPrice', '$gt', '25', true), gvm()().vrows).length).toBe(8);
+});
+
+test('filter less than or equal', () => {
+  expect(evalFilter(f('latestPrice', '$lte', '25', false), gvm()().vrows).length).toBe(8);
+  expect(evalFilter(f('latestPrice', '$lte', '25', true), gvm()().vrows).length).toBe(2);
+});
+
+test('filter greater than or equal', () => {
+  expect(evalFilter(f('latestPrice', '$gte', '25', false), gvm()().vrows).length).toBe(3);
+  expect(evalFilter(f('latestPrice', '$gte', '25', true), gvm()().vrows).length).toBe(7);
+});
+
+test('filter starts with', () => {
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', false), gvm()().vrows).length).toBe(9);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'nAsDAq', false), gvm()().vrows).length).toBe(9);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', true), gvm()().vrows).length).toBe(1);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'XASDAQ', false), gvm()().vrows).length).toBe(0);
+});
+
+test('filter ends with', () => {
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', false), gvm()().vrows).length).toBe(2);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'market', false), gvm()().vrows).length).toBe(2);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', true), gvm()().vrows).length).toBe(8);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'arkets', false), gvm()().vrows).length).toBe(0);
+});
+
 function f(field: string, operator: string, arg: string, exclude: boolean = false) {
     return {
         field: field,
