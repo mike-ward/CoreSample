@@ -65,15 +65,17 @@ export interface IGridViewCell {
 export interface IGridFilter {
   field: string;
   operator:
-  '$eq'
-  | '$neq'
-  | '$lt'
-  | '$gt'
-  | '$lte'
-  | '$gte'
-  | '$starts-with'
-  | '$ends-with'
-  | '$in-range';
+    '$includes'
+    | '$excludes'
+    | '$eq'
+    | '$neq'
+    | '$lt'
+    | '$gt'
+    | '$lte'
+    | '$gte'
+    | '$starts-with'
+    | '$ends-with'
+    | '$in-range';
   arg: any;
   exclude: boolean;
 }

@@ -3,6 +3,18 @@ import { IGridModel, IGridFilter } from "../grid-types";
 import { gridViewModel } from '../grid-view-model';
 import { evalFilter } from '../grid-filter';
 
+test('filter includes', () => {
+  expect(evalFilter(f('companyName', '$includes', ' inc.', false), gvm()().vrows).length).toBe(6);
+  expect(evalFilter(f('companyName', '$includes', ' inc.', true), gvm()().vrows).length).toBe(4);
+  expect(evalFilter(f('week52High', '$includes', '.75', false), gvm()().vrows).length).toBe(1);
+});
+
+test('filter excludes', () => {
+  expect(evalFilter(f('companyName', '$excludes', ' inc.', false), gvm()().vrows).length).toBe(4);
+  expect(evalFilter(f('companyName', '$excludes', ' inc.', true), gvm()().vrows).length).toBe(6);
+  expect(evalFilter(f('week52High', '$excludes', '.75', false), gvm()().vrows).length).toBe(9);
+});
+
 test('filter equals', () => {
     expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', false), gvm()().vrows).length).toBe(1);
     expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', true), gvm()().vrows).length).toBe(9);

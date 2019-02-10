@@ -22,12 +22,15 @@ function filterFuncFactory(filter: IGridFilter) {
         return args.every(arg => !predicate(cmp(val, arg)))
       }
       : function (row: IGridViewRow) {
+        if (!row.data[filter.field]) console.log(row.data)
         const val = row.data[filter.field].value;
         return args.some(arg => predicate(cmp(val, arg)))
       }
   }
 
   switch (filter.operator) {
+    case '$includes': return test(includes, n => n >= 0);
+    case '$excludes': return test(includes, n => n === -1);
     case '$eq': return test(compare);
     case '$neq': return test(compare, n => n !== 0);
     case '$lt': return test(compare, n => n < 0);
@@ -42,18 +45,23 @@ function filterFuncFactory(filter: IGridFilter) {
   return (_: IGridRow) => false;
 }
 
+function includes(a: any, b: any) {
+  const sa = a.toString().toLowerCase();
+  const sb = b.toString().toLowerCase();
+  return sa.indexOf(sb);
+}
+
 function compare(a: any, b: any) {
   return compareService.naturalStringCompareIgnoreCase(a, b);
 }
 
 function startsWith(a: any, b: any) {
-  const length = b.length;
-  const start = a.substring(length - a.length, length);
+  const start = a.substring(0, b.length);
   return compare(start, b);
 }
 
 function endsWith(a: any, b: any) {
-  const end = a.substring(a.length - b.length) as string;
+  const end = a.substring(a.length - b.length);
   return compare(end, b);
 }
 

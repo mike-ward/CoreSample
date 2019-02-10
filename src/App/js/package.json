@@ -1,19 +1,20 @@
 {
-  "name": "js",
-  "version": "1.0.0",
+  "name": "coresample",
+  "version": "0.0.1",
   "description": "Example of MithrilJS and ASP.Net Core",
   "repository": "https://github.com/mike-ward/CoreSample",
   "main": "index.js",
   "scripts": {
+    "watch": "npx webpack --config webpack.config.js --watch",
     "test": "jest",
+    "west": "jest --watch",
     "build-Debug": "npx webpack -d",
-    "build-Release": "npx webpack -p --devtool=source-map",
     "build-debug": "npm run build-Debug",
-    "build-release": "npm run build-Release",
-    "watch": "npx webpack --config webpack.config.js --watch"
+    "build-Release": "npx webpack -p --devtool=source-map",
+    "build-release": "npm run build-Release"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mike Ward",
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^23.3.13",
