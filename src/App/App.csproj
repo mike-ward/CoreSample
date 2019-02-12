@@ -11,6 +11,7 @@
   <ItemGroup>
     <None Remove="js\app.ts" />
     <None Remove="js\browser-mock.ts" />
+    <None Remove="js\components\grid\grid-column-menu.ts" />
     <None Remove="js\components\grid\grid-filter.ts" />
     <None Remove="js\components\grid\grid-sort.ts" />
     <None Remove="js\components\grid\grid-types.ts" />
@@ -31,6 +32,7 @@
     <None Remove="js\components\pages\news.ts" />
     <None Remove="js\components\pages\splash.ts" />
     <None Remove="js\components\pages\stocks.ts" />
+    <None Remove="js\components\popup\popup.ts" />
     <None Remove="js\services\app-service.ts" />
     <None Remove="js\services\compare-service.ts" />
     <None Remove="js\services\constants-service.ts" />
@@ -55,6 +57,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app.ts" />
     <TypeScriptCompile Include="js\browser-mock.ts" />
+    <TypeScriptCompile Include="js\components\grid\grid-column-menu.ts" />
     <TypeScriptCompile Include="js\components\grid\grid-filter.ts" />
     <TypeScriptCompile Include="js\components\grid\grid-sort.ts" />
     <TypeScriptCompile Include="js\components\grid\grid-types.ts" />
@@ -75,6 +78,7 @@
     <TypeScriptCompile Include="js\components\pages\news.ts" />
     <TypeScriptCompile Include="js\components\pages\splash.ts" />
     <TypeScriptCompile Include="js\components\pages\stocks.ts" />
+    <TypeScriptCompile Include="js\components\popup\popup.ts" />
     <TypeScriptCompile Include="js\services\app-service.ts" />
     <TypeScriptCompile Include="js\services\compare-service.ts" />
     <TypeScriptCompile Include="js\services\constants-service.ts" />

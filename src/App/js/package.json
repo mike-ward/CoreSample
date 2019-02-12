@@ -5,7 +5,7 @@
   "repository": "https://github.com/mike-ward/CoreSample",
   "main": "index.js",
   "scripts": {
-    "watch": "npx webpack --config webpack.config.js --watch",
+    "watch": "npx webpack -d --watch",
     "test": "jest",
     "west": "jest --watch",
     "build-Debug": "npx webpack -d",

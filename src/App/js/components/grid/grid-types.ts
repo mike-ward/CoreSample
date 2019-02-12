@@ -33,6 +33,9 @@ export interface IGridColumn {
   /** Defaults to compareService.sortAny() when sortAllow is true */
   sortComparer?: (a: IGridRow, b: IGridRow) => number;
 
+  filterEnable?: boolean;
+  filters?: IGridFilter[];
+
   /** Tooltip to display when hovering over cell */
   cellTooltip?: (value: any, renderedValue: any, column: IGridColumn, row: IGridRow, meta: any) => string;
   /** Action to take when cell is clicked. If specified, grid changes cursor style to "pointer" */

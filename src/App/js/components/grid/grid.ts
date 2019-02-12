@@ -2,8 +2,9 @@
 import stream from 'mithril/stream';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
+import { gridColumnMenu } from './grid-column-menu';
+import { IGridAttrs, IGridColumn, IGridViewCell, IGridViewModel } from './grid-types';
 import { gridViewModel } from './grid-view-model';
-import { IGridAttrs, IGridColumn, IGridViewModel, IGridViewCell } from './grid-types';
 
 export const gridStyles =
   `div.app-grid { overflow-x: auto }
@@ -11,12 +12,11 @@ export const gridStyles =
   .app-grid th {background-color:${constants.color.thBg};color:${constants.color.text}!important}
   .app-grid th,.app-grid td {white-space:nowrap;padding:.2em;text-align:left;border:1px solid #eee}
   .app-grid-cell-click-action {cursor:pointer;}
-  .app-grid-cell-click:hover {text-decoration:underline;}
   .app-grid-sort-indicator:hover, .app-grid-sort-indicator-up, .app-grid-sort-indicator-dn {cursor:pointer;}
-  .app-grid-sort-indicator-hi:after {content:'▲';color:#ccd;visibility:hidden;}
+  .app-grid-sort-indicator-hi:after {content:' ▲';color:#ccd;visibility:hidden;}
   .app-grid-sort-indicator-hi:hover:after {visibility:visible}
-  .app-grid-sort-indicator-up:after {content:'▲'}
-  .app-grid-sort-indicator-dn:after {content:'▼'}`;
+  .app-grid-sort-indicator-up:after {content:' ▲'}
+  .app-grid-sort-indicator-dn:after {content:' ▼'}`;
 
 cssStylesAdd(gridStyles);
 
@@ -64,7 +64,9 @@ function th(vm: IGridViewModel, column: IGridColumn) {
       title: column.tooltip,
       onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
     },
-    column.name);
+    m('span', column.name),
+    m(gridColumnMenu)
+  );
 }
 
 function tbody(vm: IGridViewModel) {
