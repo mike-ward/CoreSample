@@ -9,7 +9,7 @@ import { gridViewModel } from './grid-view-model';
 export const gridStyles =
   `div.app-grid { overflow-x: auto }
    table.app-grid {border:1px;border-collapse:collapse}
-  .app-grid th {background-color:${constants.color.thBg};color:${constants.color.text}!important}
+  .app-grid th {background-color:${constants.color.thBg};color:${constants.color.text}!important;}
   .app-grid th,.app-grid td {white-space:nowrap;padding:.2em;text-align:left;border:1px solid #eee}
   .app-grid-cell-click-action {cursor:pointer;}
   .app-grid-sort-indicator:hover, .app-grid-sort-indicator-up, .app-grid-sort-indicator-dn {cursor:pointer;}
@@ -37,7 +37,6 @@ function table(vm: IGridViewModel, attrs: IGridAttrs) {
 
 function thead(vm: IGridViewModel) {
   const columns = vm.columns;
-  // Prealloate for performance
   const ths = [];
 
   // Use for loops instead and index for performance
@@ -61,11 +60,12 @@ function th(vm: IGridViewModel, column: IGridColumn) {
   return m('th',
     {
       class: classNames,
+      style: { 'min-width': column.minWidth },
       title: column.tooltip,
       onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
     },
-    m('span', column.name),
-    m(gridColumnMenu)
+     m('span', column.name),
+     m(gridColumnMenu)
   );
 }
 

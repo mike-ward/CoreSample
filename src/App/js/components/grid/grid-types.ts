@@ -23,6 +23,8 @@ export interface IGridColumn {
   tooltip?: string;
   /** Determines the order of columns displayed (not implemented) */
   ordinal?: number;
+  /** Minimal width of cell (i.e. 5rem, 2pc, 20px, etc.), use 0 for auto calculate */
+  minWidth?: string;
 
   /** When enabled, changes cursor to "pointer" and adds direction arrows, click handlers */
   sortEnable?: boolean;
