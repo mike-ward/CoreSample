@@ -3,7 +3,7 @@ import stream from 'mithril/stream';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
 import { gridColumnMenu } from './grid-column-menu';
-import { IGridAttrs, IGridColumn, IGridViewCell, IGridViewModel } from './grid-types';
+import { IGridAttrs, IGridViewColumn, IGridViewCell, IGridViewModel } from './grid-types';
 import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
@@ -39,27 +39,17 @@ function thead(vm: IGridViewModel) {
   const columns = vm.columns;
   const ths = [];
 
-  // Use for loops instead and index for performance
+  // Use for loops and index for performance
   for (let col = 0; col < vm.columns.length; ++col) {
     ths[col] = th(vm, columns[col]);
   }
   return m('thead', m('tr', ths));
 }
 
-function th(vm: IGridViewModel, column: IGridColumn) {
-  let classNames = undefined as string;
-
-  if (column.sortEnable) {
-    const classes = ['app-grid-sort-indicator'];
-    if (!column.sortDirection) classes.push('app-grid-sort-indicator-hi');
-    if (column.sortDirection > 0) classes.push('app-grid-sort-indicator-up');
-    if (column.sortDirection < 0) classes.push('app-grid-sort-indicator-dn');
-    classNames = classes.join(' ');
-  }
-
+function th(vm: IGridViewModel, column: IGridViewColumn) {
   return m('th',
     {
-      class: classNames,
+      class: column.classNames,
       style: { 'min-width': column.minWidth },
       title: column.tooltip,
       onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
@@ -76,7 +66,7 @@ function tbody(vm: IGridViewModel) {
   const rowLength = vm.vrows.length;
   const trs = [];
 
-  // Use for loops instead and index for performance
+  // Use for loops and index for performance
   for (let row = 0; row < rowLength; ++row) {
     const vrow = vrows[row];
     const tds = [];

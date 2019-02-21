@@ -51,14 +51,18 @@ export type IGridRow = {
 };
 
 export interface IGridViewModel {
-  columns: IGridColumn[];
+  columns: IGridViewColumn[];
   vrows: IGridViewRow[];
   updateSort: (columnId: string) => void;
 }
 
+export interface IGridViewColumn extends IGridColumn {
+  classNames: string;
+}
+
 export interface IGridViewRow {
   key?: string;
-  data: { [key: string]: IGridViewCell };
+  data: { [columnId: string]: IGridViewCell };
 }
 
 export interface IGridViewCell {

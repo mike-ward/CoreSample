@@ -1,27 +1,32 @@
 ﻿import stream from 'mithril/stream';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
-import { IGridModel, IGridViewModel, IGridRow, IGridColumn, IGridViewRow, IGridViewCell } from './grid-types';
+import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow } from './grid-types';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
-  const vms = model.map<IGridViewModel>(mdl => {
-    if (!mdl) return null;
-    const filteredColumns = mdl.columns.filter(c => !c.hide);
-    const adjustedColumns = adjustColumnWidths(filteredColumns);
-
-    return {
-      columns: adjustedColumns,
-      vrows: gridViewDataRows(filteredColumns, mdl),
-      updateSort: (columnId: string) => model(updateSortState(mdl, columnId))
-    }
-  });
-
+  const vms = model.map<IGridViewModel>(gm => viewModel(model, gm));
   return vms;
 }
 
-function gridViewDataRows(columns: IGridColumn[], gm: IGridModel) {
-  // Prealloate for performance
-  const length = gm.rows.length;
+function viewModel(model: stream.Stream<IGridModel>, gm: IGridModel) {
+  if (!gm) return null;
+
+  const viewColumns = gm.columns
+    .filter(c => !c.hide)
+    .map(c => Object.assign({} as IGridViewColumn, c));
+
+  adjustWidths(viewColumns);
+  addClassNames(viewColumns);
+
+  return {
+    columns: viewColumns,
+    vrows: gridViewDataRows(viewColumns, gm),
+    updateSort: (columnId: string) => model(updateSortState(gm, columnId))
+  }
+}
+
+function gridViewDataRows(columns: IGridViewColumn[], gm: IGridModel) {
   const vrows = [];
+  const length = gm.rows.length;
 
   // Use for loop instead of map for preformance
   for (let row = 0; row < length; ++row) {
@@ -33,10 +38,10 @@ function gridViewDataRows(columns: IGridColumn[], gm: IGridModel) {
 }
 
 function gridDataRow(columns: IGridColumn[], dataRow: IGridRow, gm: IGridModel) {
-  const length = columns.length
+  const length = columns.length;
   const data = Object.create(null);
 
-  // Use for loop instead of reduce() for preformance
+  // Use for loop  for preformance
   for (let col = 0; col < length; ++col) {
     const column = columns[col];
     data[column.id] = gridDataCell(dataRow, column, gm.meta);
@@ -68,17 +73,26 @@ function gridDataCell(row: IGridRow, col: IGridColumn, meta: any) {
   // Only create keys if values defined to reduce memory footprint
   if (tooltip) cell.tooltip = tooltip;
   if (clickHandler) cell.clickHandler = clickHandler;
-
   return cell;
 }
 
-function adjustColumnWidths(columns: IGridColumn[]) {
-  return columns.map(column => {
-    const c = Object.assign({} as IGridColumn, column);
-    c.minWidth = c.minWidth
-      ? c.minWidth
-      : getTextWidth(c.name + "MM") + 'px';
-    return c;
+function adjustWidths(columns: IGridViewColumn[]) {
+  columns.forEach(column => {
+    column.minWidth = column.minWidth
+      ? column.minWidth
+      : getTextWidth(column.name + "MM") + 'px';
+  });
+}
+
+function addClassNames(columns: IGridViewColumn[]) {
+  columns.forEach(column => {
+    if (column.sortEnable) {
+      const classes = ['app-grid-sort-indicator'];
+      if (!column.sortDirection) classes.push('app-grid-sort-indicator-hi');
+      if (column.sortDirection > 0) classes.push('app-grid-sort-indicator-up');
+      if (column.sortDirection < 0) classes.push('app-grid-sort-indicator-dn');
+      column.classNames = classes.join(' ');
+    }
   });
 }
 
