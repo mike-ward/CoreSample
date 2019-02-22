@@ -12,7 +12,7 @@ function viewModel(model: stream.Stream<IGridModel>, gm: IGridModel) {
 
   const viewColumns = gm.columns
     .filter(c => !c.hide)
-    .map(c => Object.assign({} as IGridViewColumn, c));
+    .map(c => ({...c} as IGridViewColumn));
 
   adjustWidths(viewColumns);
   addClassNames(viewColumns);

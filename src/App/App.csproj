@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="tsout\**" />
+    <Content Remove="tsout\**" />
+    <EmbeddedResource Remove="tsout\**" />
+    <None Remove="tsout\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="js\app.ts" />
     <None Remove="js\browser-mock.ts" />
     <None Remove="js\components\grid\grid-column-menu.ts" />
