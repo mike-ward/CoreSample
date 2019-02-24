@@ -1,4 +1,5 @@
-﻿import stream from 'mithril/stream';
+﻿import '../../../browser-mock';
+import stream from 'mithril/stream';
 import { IGridModel, IGridFilter } from "../grid-types";
 import { gridViewModel } from '../grid-view-model';
 import { evalFilter } from '../grid-filter';

@@ -22,7 +22,6 @@ function filterFuncFactory(filter: IGridFilter) {
         return args.every(arg => !predicate(cmp(val, arg)))
       }
       : function (row: IGridViewRow) {
-        if (!row.data[filter.field]) console.log(row.data)
         const val = row.data[filter.field].value;
         return args.some(arg => predicate(cmp(val, arg)))
       }

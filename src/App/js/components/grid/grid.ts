@@ -2,14 +2,13 @@
 import stream from 'mithril/stream';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
-import { gridColumnMenu } from './grid-column-menu';
-import { IGridAttrs, IGridViewColumn, IGridViewCell, IGridViewModel } from './grid-types';
+import { IGridAttrs, IGridViewCell, IGridViewColumn, IGridViewModel } from './grid-types';
 import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
   `div.app-grid { overflow-x: auto }
    table.app-grid {border:1px;border-collapse:collapse}
-  .app-grid th {background-color:${constants.color.thBg};color:${constants.color.text}!important;}
+  .app-grid th {background-color:${constants.color.dim1};color:${constants.color.text}!important;}
   .app-grid th,.app-grid td {white-space:nowrap;padding:.2em;text-align:left;border:1px solid #eee}
   .app-grid-cell-click-action {cursor:pointer;}
   .app-grid-sort-indicator:hover, .app-grid-sort-indicator-up, .app-grid-sort-indicator-dn {cursor:pointer;}
@@ -31,7 +30,14 @@ export const grid: m.FactoryComponent<IGridAttrs> = () => {
 
 function table(vm: IGridViewModel, attrs: IGridAttrs) {
   return vm && vm.columns && vm.vrows
-    ? m('table.app-grid', attrs, [thead(vm), tbody(vm)])
+    ? [
+      m(vm.columnMenu.gridColumnMenu),
+      m('table.app-grid', attrs,
+        [
+          thead(vm),
+          tbody(vm)
+        ])
+    ]
     : null;
 }
 
@@ -54,8 +60,8 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
       title: column.tooltip,
       onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
     },
-     m('span', column.name),
-     m(gridColumnMenu)
+    column.name,
+    vm.columnMenu.gridColumnMenuIcon()
   );
 }
 

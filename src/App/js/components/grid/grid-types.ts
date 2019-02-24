@@ -54,6 +54,7 @@ export interface IGridViewModel {
   columns: IGridViewColumn[];
   vrows: IGridViewRow[];
   updateSort: (columnId: string) => void;
+  columnMenu: IGridColumnMenu;
 }
 
 export interface IGridViewColumn extends IGridColumn {
@@ -87,4 +88,9 @@ export interface IGridFilter {
     | '$in-range';
   arg: any;
   exclude: boolean;
+}
+
+export interface IGridColumnMenu {
+  gridColumnMenuIcon: () => m.Vnode,
+  gridColumnMenu: () => m.Component
 }

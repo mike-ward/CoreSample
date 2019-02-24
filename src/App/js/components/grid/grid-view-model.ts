@@ -1,6 +1,7 @@
 ﻿import stream from 'mithril/stream';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
 import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow } from './grid-types';
+import { gridColumnMenuFactory } from './grid-column-menu';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const vms = model.map<IGridViewModel>(gm => viewModel(model, gm));
@@ -20,7 +21,8 @@ function viewModel(model: stream.Stream<IGridModel>, gm: IGridModel) {
   return {
     columns: viewColumns,
     vrows: gridViewDataRows(viewColumns, gm),
-    updateSort: (columnId: string) => model(updateSortState(gm, columnId))
+    updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
+    columnMenu: gridColumnMenuFactory()
   }
 }
 
