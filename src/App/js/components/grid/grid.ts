@@ -6,16 +6,19 @@ import { IGridAttrs, IGridViewCell, IGridViewColumn, IGridViewModel } from './gr
 import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
-  `div.app-grid { overflow-x: auto }
-   table.app-grid {border:1px;border-collapse:collapse}
-  .app-grid th {background-color:${constants.color.dim1};color:${constants.color.text}!important;}
-  .app-grid th,.app-grid td {white-space:nowrap;padding:.2em;text-align:left;border:1px solid #eee}
-  .app-grid-cell-click-action {cursor:pointer;}
-  .app-grid-sort-indicator:hover, .app-grid-sort-indicator-up, .app-grid-sort-indicator-dn {cursor:pointer;}
-  .app-grid-sort-indicator-hi:after {content:' ▲';color:#ccd;visibility:hidden;}
-  .app-grid-sort-indicator-hi:hover:after {visibility:visible}
-  .app-grid-sort-indicator-up:after {content:' ▲'}
-  .app-grid-sort-indicator-dn:after {content:' ▼'}`;
+  `div.app-grid                            { overflow-x: auto }
+   table.app-grid                          { border:1px;border-collapse:collapse }
+   .app-grid th                            { background-color:${constants.color.dim1}; color:${constants.color.text}!important }
+   .app-grid th,
+   .app-grid td                            { white-space: nowrap; padding:.2em; text-align: left; border: 1px solid #eee }
+   .app-grid-cell-click-action,
+   .app-grid-sort-indicator:hover, 
+   .app-grid-sort-indicator-up, 
+   .app-grid-sort-indicator-dn             { cursor: pointer }
+   .app-grid-sort-indicator-hi:after       { content: ' ▲'; color:#ccd; visibility:hidden; }
+   .app-grid-sort-indicator-hi:hover:after { visibility:visible }
+   .app-grid-sort-indicator-up:after       { content: ' ▲' }
+   .app-grid-sort-indicator-dn:after       { content: ' ▼' }`;
 
 cssStylesAdd(gridStyles);
 
@@ -60,7 +63,7 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
       title: column.tooltip,
       onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
     },
-    column.name,
+    m('span.noselect', column.name),
     vm.columnMenu.gridColumnMenuIcon()
   );
 }

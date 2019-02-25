@@ -4,11 +4,12 @@ import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGri
 import { gridColumnMenuFactory } from './grid-column-menu';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
-  const vms = model.map<IGridViewModel>(gm => viewModel(model, gm));
+  const columnMenu = gridColumnMenuFactory();
+  const vms = model.map<IGridViewModel>(gm => viewModel(model, columnMenu, gm));
   return vms;
 }
 
-function viewModel(model: stream.Stream<IGridModel>, gm: IGridModel) {
+function viewModel(model: stream.Stream<IGridModel>, columnMenu:any, gm: IGridModel) {
   if (!gm) return null;
 
   const viewColumns = gm.columns
@@ -22,7 +23,7 @@ function viewModel(model: stream.Stream<IGridModel>, gm: IGridModel) {
     columns: viewColumns,
     vrows: gridViewDataRows(viewColumns, gm),
     updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
-    columnMenu: gridColumnMenuFactory()
+    columnMenu: columnMenu
   }
 }
 
