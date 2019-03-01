@@ -2,7 +2,7 @@
 import { header } from './header';
 import { footer } from './footer';
 
-export const layout = {
+export const layout: m.Component = {
   view: layoutView
 }
 

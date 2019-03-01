@@ -1,6 +1,6 @@
 ﻿import m from 'mithril';
 
-export const userBar = {
+export const userBar: m.Component = {
   view: userBarView
 };
 

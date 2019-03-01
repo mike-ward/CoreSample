@@ -2,7 +2,7 @@
 import { userBar } from './user-bar';
 import constants from '../../services/constants-service';
 
-export const navBar = {
+export const navBar: m.Component = {
   view: navBarView
 }
 

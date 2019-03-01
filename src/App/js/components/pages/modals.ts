@@ -1,5 +1,5 @@
 ﻿import m from 'mithril';
-import { msg, yesNo, yesNoCancel, ask } from '../../services/dialog-service';
+import { ask, msg, yesNo, yesNoCancel } from '../../services/dialog-service';
 
 export const modals: m.Component = {
   view: modalsView

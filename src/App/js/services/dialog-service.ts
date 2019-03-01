@@ -1,11 +1,11 @@
 ﻿import m from 'mithril';
 import constants from './constants-service';
-import { cssStylesAdd } from './css-service'
-import { modal, closeModal } from './modal-service';
+import { cssStylesAdd } from './css-service';
+import { closeModal, modal } from './modal-service';
 
 cssStylesAdd(
-  `.message-foot{border-top:1px solid gainsboro;padding:.5em 1rem;text-align:right}
-   .message-foot button{margin:0 .3rem;min-width:5rem}`);
+  `.message-foot        { border-top:1px solid gainsboro; padding:.5em 1rem; text-align:right }
+   .message-foot button { margin:0 .3rem; min-width:5rem }`);
 
 function closeDialog(result: () => void) {
   closeModal();

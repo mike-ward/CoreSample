@@ -5,7 +5,7 @@ import { cssStylesAdd } from '../../services/css-service';
 // language=CSS
 cssStylesAdd(`.foot{margin-top:5rem;}`);
 
-export const footer = {
+export const footer: m.Component = {
   view: footerView
 }
 

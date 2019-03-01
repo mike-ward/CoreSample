@@ -3,10 +3,12 @@ import { cssStylesAdd } from '../../services/css-service';
 
 cssStylesAdd(``);
 
-export const popup = {
-  view: popupView
-}
+export const popup: m.FactoryComponent = () => {
+  return {
+    view: popupView
+  }
 
-function popupView(_v: m.Vnode) {
-  return m('.panel');
+  function popupView(_v: m.Vnode) {
+    return m('.panel');
+  }
 }

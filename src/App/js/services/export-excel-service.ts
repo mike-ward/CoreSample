@@ -1,9 +1,9 @@
 ﻿import m from 'mithril';
 import stream from 'mithril/stream';
-import constants from './constants-service';
-import { download } from './download-service';
 import { grid, gridStyles } from '../components/grid/grid';
 import { IGridModel } from '../components/grid/grid-types';
+import constants from './constants-service';
+import { download } from './download-service';
 
 export function gridToExcel(model: stream.Stream<IGridModel>, name: string, filename: string) {
   const hidden = document.createElement('div')

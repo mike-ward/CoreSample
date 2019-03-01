@@ -1,16 +1,16 @@
 ﻿import m from 'mithril';
+import { popupId } from '../../services/app-service';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
 import { IGridColumnMenu } from './grid-types';
-import { popupId } from '../../services/app-service';
 
 cssStylesAdd(
-  `.app-grid-column-menu-icon { padding-right: .3rem; display: inline-block; float: right; color: ${constants.color.dim1} }
+  `.app-grid-column-menu-icon                      { padding-right: .3rem; display: inline-block; float: right; color: ${constants.color.dim1} }
    .app-grid th:hover > .app-grid-column-menu-icon { color:${constants.color.dim2} }
-   .app-grid-column-menu-icon:hover { color: ${constants.color.text} !important; }
+   .app-grid-column-menu-icon:hover                { color: ${constants.color.text} !important; }
 
-   .app-grid-column-menu { position: absolute; border: ${constants.border.thin}; background-color: ${constants.color.back}  }
-   .app-grid-column-menu-head { padding: .5rem; }
+   .app-grid-column-menu                           { position: absolute; border: ${constants.border.thin}; background-color: ${constants.color.back} }
+   .app-grid-column-menu-head                      { padding: .5rem; }
   `);
 
 export function gridColumnMenuFactory(): IGridColumnMenu {
@@ -37,15 +37,17 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
 
     function view() {
       const styles = {
-        display: popupId() === model.popupId ? 'block' : 'none',
         top: model.top,
         left: model.left
       }
 
       const vnode =
-        m('.app-grid-column-menu', { style: styles },
-          head()
-        );
+        popupId() === model.popupId
+          ? m('.app-grid-column-menu', { style: styles },
+            head()
+          )
+          : null;
+
       return vnode;
     }
 
