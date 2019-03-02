@@ -5,59 +5,69 @@ import { gridViewModel } from '../grid-view-model';
 import { evalFilter } from '../grid-filter';
 
 test('filter includes', () => {
-  expect(evalFilter(f('companyName', '$includes', ' inc.', false), gvm()().vrows).length).toBe(6);
-  expect(evalFilter(f('companyName', '$includes', ' inc.', true), gvm()().vrows).length).toBe(4);
-  expect(evalFilter(f('week52High', '$includes', '.75', false), gvm()().vrows).length).toBe(1);
+  const vm = gvm();
+  expect(evalFilter(f('companyName', '$includes', ' inc.', false), vm().columns, vm().vrows).length).toBe(6);
+  expect(evalFilter(f('companyName', '$includes', ' inc.', true), vm().columns, vm().vrows).length).toBe(4);
+  expect(evalFilter(f('week52High', '$includes', '.75', false), vm().columns, vm().vrows).length).toBe(1);
 });
 
 test('filter excludes', () => {
-  expect(evalFilter(f('companyName', '$excludes', ' inc.', false), gvm()().vrows).length).toBe(4);
-  expect(evalFilter(f('companyName', '$excludes', ' inc.', true), gvm()().vrows).length).toBe(6);
-  expect(evalFilter(f('week52High', '$excludes', '.75', false), gvm()().vrows).length).toBe(9);
+  const vm = gvm();
+  expect(evalFilter(f('companyName', '$excludes', ' inc.', false), vm().columns, vm().vrows).length).toBe(4);
+  expect(evalFilter(f('companyName', '$excludes', ' inc.', true), vm().columns, vm().vrows).length).toBe(6);
+  expect(evalFilter(f('week52High', '$excludes', '.75', false), vm().columns, vm().vrows).length).toBe(9);
 });
 
 test('filter equals', () => {
-    expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', false), gvm()().vrows).length).toBe(1);
-    expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', true), gvm()().vrows).length).toBe(9);
+  const vm = gvm();
+  expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', false), vm().columns, vm().vrows).length).toBe(1);
+    expect(evalFilter(f('companyName', '$eq', 'Overstock.com Inc.', true), vm().columns, vm().vrows).length).toBe(9);
 });
 
 test('filter not equals', () => {
-  expect(evalFilter(f('companyName', '$neq', 'Overstock.com Inc.', false), gvm()().vrows).length).toBe(9);
-  expect(evalFilter(f('companyName', '$neq', 'Overstock.com Inc.', true), gvm()().vrows).length).toBe(1);
+  const vm = gvm();
+  expect(evalFilter(f('companyName', '$neq', 'Overstock.com Inc.', false), vm().columns, vm().vrows).length).toBe(9);
+  expect(evalFilter(f('companyName', '$neq', 'Overstock.com Inc.', true), vm().columns, vm().vrows).length).toBe(1);
 });
 
 test('filter less than', () => {
-  expect(evalFilter(f('latestPrice', '$lt', '25', false), gvm()().vrows).length).toBe(7);
-  expect(evalFilter(f('latestPrice', '$lt', '25', true), gvm()().vrows).length).toBe(3);
+  const vm = gvm();
+  expect(evalFilter(f('latestPrice', '$lt', '25', false), vm().columns, vm().vrows).length).toBe(7);
+  expect(evalFilter(f('latestPrice', '$lt', '25', true), vm().columns, vm().vrows).length).toBe(3);
 });
 
 test('filter greater than', () => {
-  expect(evalFilter(f('latestPrice', '$gt', '25', false), gvm()().vrows).length).toBe(2);
-  expect(evalFilter(f('latestPrice', '$gt', '25', true), gvm()().vrows).length).toBe(8);
+  const vm = gvm();
+  expect(evalFilter(f('latestPrice', '$gt', '25', false), vm().columns, vm().vrows).length).toBe(2);
+  expect(evalFilter(f('latestPrice', '$gt', '25', true), vm().columns, vm().vrows).length).toBe(8);
 });
 
 test('filter less than or equal', () => {
-  expect(evalFilter(f('latestPrice', '$lte', '25', false), gvm()().vrows).length).toBe(8);
-  expect(evalFilter(f('latestPrice', '$lte', '25', true), gvm()().vrows).length).toBe(2);
+  const vm = gvm();
+  expect(evalFilter(f('latestPrice', '$lte', '25', false), vm().columns, vm().vrows).length).toBe(8);
+  expect(evalFilter(f('latestPrice', '$lte', '25', true), vm().columns, vm().vrows).length).toBe(2);
 });
 
 test('filter greater than or equal', () => {
-  expect(evalFilter(f('latestPrice', '$gte', '25', false), gvm()().vrows).length).toBe(3);
-  expect(evalFilter(f('latestPrice', '$gte', '25', true), gvm()().vrows).length).toBe(7);
+  const vm = gvm();
+  expect(evalFilter(f('latestPrice', '$gte', '25', false), vm().columns, vm().vrows).length).toBe(3);
+  expect(evalFilter(f('latestPrice', '$gte', '25', true), vm().columns, vm().vrows).length).toBe(7);
 });
 
 test('filter starts with', () => {
-  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', false), gvm()().vrows).length).toBe(9);
-  expect(evalFilter(f('primaryExchange', '$starts-with', 'nAsDAq', false), gvm()().vrows).length).toBe(9);
-  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', true), gvm()().vrows).length).toBe(1);
-  expect(evalFilter(f('primaryExchange', '$starts-with', 'XASDAQ', false), gvm()().vrows).length).toBe(0);
+  const vm = gvm();
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', false), vm().columns, vm().vrows).length).toBe(9);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'nAsDAq', false), vm().columns, vm().vrows).length).toBe(9);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'NASDAQ', true), vm().columns, vm().vrows).length).toBe(1);
+  expect(evalFilter(f('primaryExchange', '$starts-with', 'XASDAQ', false), vm().columns, vm().vrows).length).toBe(0);
 });
 
 test('filter ends with', () => {
-  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', false), gvm()().vrows).length).toBe(2);
-  expect(evalFilter(f('primaryExchange', '$ends-with', 'market', false), gvm()().vrows).length).toBe(2);
-  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', true), gvm()().vrows).length).toBe(8);
-  expect(evalFilter(f('primaryExchange', '$ends-with', 'arkets', false), gvm()().vrows).length).toBe(0);
+  const vm = gvm();
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', false), vm().columns, vm().vrows).length).toBe(2);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'market', false), vm().columns, vm().vrows).length).toBe(2);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'Market', true), vm().columns, vm().vrows).length).toBe(8);
+  expect(evalFilter(f('primaryExchange', '$ends-with', 'arkets', false), vm().columns, vm().vrows).length).toBe(0);
 });
 
 function f(field: string, operator: string, arg: string, exclude: boolean = false) {

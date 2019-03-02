@@ -9,50 +9,56 @@ export function gridViewModel(model: stream.Stream<IGridModel>) {
   return vms;
 }
 
-function viewModel(model: stream.Stream<IGridModel>, columnMenu:any, gm: IGridModel) {
+function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridModel) {
   if (!gm) return null;
 
-  const viewColumns = gm.columns
-    .filter(c => !c.hide)
-    .map(c => ({...c} as IGridViewColumn));
-
-  adjustWidths(viewColumns);
-  addClassNames(viewColumns);
+  const viewCols = createViewColumns(gm);
+  const viewRows = createViewRows(viewCols, gm.rows, gm.key, gm.meta);
 
   return {
-    columns: viewColumns,
-    vrows: gridViewDataRows(viewColumns, gm),
+    columns: viewCols,
+    vrows: viewRows,
     updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
     columnMenu: columnMenu
   }
 }
 
-function gridViewDataRows(columns: IGridViewColumn[], gm: IGridModel) {
+function createViewColumns(gm: IGridModel) {
+  const viewColumns = gm.columns
+    .filter(c => !c.hide)
+    .map(c => ({ ...c } as IGridViewColumn));
+
+  adjustWidths(viewColumns);
+  addClassNames(viewColumns);
+  return viewColumns;
+}
+
+function createViewRows(viewCols: IGridViewColumn[], rows: IGridRow[], key: string, meta: any) {
   const vrows = [];
-  const length = gm.rows.length;
+  const length = rows.length;
 
   // Use for loop instead of map for preformance
-  for (let row = 0; row < length; ++row) {
-    vrows[row] = gridDataRow(columns, gm.rows[row], gm);
+  for (let count = 0; count < length; ++count) {
+    vrows[count] = createViewRow(viewCols, rows[count], key, meta);
   }
 
-  sortRowsByColumns(columns, vrows);
+  sortRowsByColumns(viewCols, vrows);
   return vrows;
 }
 
-function gridDataRow(columns: IGridColumn[], dataRow: IGridRow, gm: IGridModel) {
+function createViewRow(columns: IGridColumn[], gridRow: IGridRow, key: string, meta: any) {
   const length = columns.length;
-  const data = Object.create(null);
+  const data = [];
 
   // Use for loop  for preformance
   for (let col = 0; col < length; ++col) {
     const column = columns[col];
-    data[column.id] = gridDataCell(dataRow, column, gm.meta);
+    data[col] = gridDataCell(gridRow, column, meta);
   }
 
   const row = { data: data } as IGridViewRow;
   // Only create key if value defined to reduce memory footprint
-  if (gm.key) row.key = dataRow[gm.key]
+  if (key) row.key = gridRow[key]
   return row;
 }
 
@@ -74,6 +80,7 @@ function gridDataCell(row: IGridRow, col: IGridColumn, meta: any) {
   const cell = { value: renderedValue } as IGridViewCell;
 
   // Only create keys if values defined to reduce memory footprint
+  if (col.css) cell.css = col.css;
   if (tooltip) cell.tooltip = tooltip;
   if (clickHandler) cell.clickHandler = clickHandler;
   return cell;

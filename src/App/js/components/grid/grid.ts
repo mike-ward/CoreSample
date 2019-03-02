@@ -12,8 +12,8 @@ export const gridStyles =
    .app-grid th,
    .app-grid td                            { white-space: nowrap; padding:.2em; text-align: left; border: 1px solid #eee }
    .app-grid-cell-click-action,
-   .app-grid-sort-indicator:hover, 
-   .app-grid-sort-indicator-up, 
+   .app-grid-sort-indicator:hover,
+   .app-grid-sort-indicator-up,
    .app-grid-sort-indicator-dn             { cursor: pointer }
    .app-grid-sort-indicator-hi:after       { content: ' ▲'; color:#ccd; visibility:hidden; }
    .app-grid-sort-indicator-hi:hover:after { visibility:visible }
@@ -32,7 +32,7 @@ export const grid: m.FactoryComponent<IGridAttrs> = () => {
 }
 
 function table(vm: IGridViewModel, attrs: IGridAttrs) {
-  return vm && vm.columns && vm.vrows
+  return vm
     ? [
       m(vm.columnMenu.gridColumnMenu),
       m('table.app-grid', attrs,
@@ -45,12 +45,13 @@ function table(vm: IGridViewModel, attrs: IGridAttrs) {
 }
 
 function thead(vm: IGridViewModel) {
-  const columns = vm.columns;
   const ths = [];
+  const columns = vm.columns;
+  const columnsLength = vm.columns.length;
 
-  // Use for loops and index for performance
-  for (let col = 0; col < vm.columns.length; ++col) {
-    ths[col] = th(vm, columns[col]);
+  // Use loops and indexes for performance
+  for (let colIndex = 0; colIndex < columnsLength; ++colIndex) {
+    ths[colIndex] = th(vm, columns[colIndex]);
   }
   return m('thead', m('tr', ths));
 }
@@ -69,32 +70,29 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
 }
 
 function tbody(vm: IGridViewModel) {
-  const columns = vm.columns;
-  const colLength = columns.length;
-  const vrows = vm.vrows;
-  const rowLength = vm.vrows.length;
   const trs = [];
+  const vrows = vm.vrows;
+  const rowsCount = vm.vrows.length;
 
-  // Use for loops and index for performance
-  for (let row = 0; row < rowLength; ++row) {
-    const vrow = vrows[row];
+  // Use loops and indexes for performance
+  for (let rowIndex = 0; rowIndex < rowsCount; ++rowIndex) {
     const tds = [];
+    const vrow = vrows[rowIndex];
+    const columnsCount = vrow.data.length;
+    const data = vrow.data;
 
-    for (let col = 0; col < colLength; ++col) {
-      const column = columns[col];
-      tds[col] = td(vrow.data[column.id], column.css);
+    for (let colIndex = 0; colIndex < columnsCount; ++colIndex) {
+      tds[colIndex] = td(data[colIndex]);
     }
-
-    trs[row] = m('tr', { key: vrow.key }, tds);
+    trs[rowIndex] = m('tr', { key: vrow.key }, tds);
   }
-
   return m('tbody', trs);
 }
 
-function td(cell: IGridViewCell, css: string | object) {
+function td(cell: IGridViewCell) {
   return m('td',
     {
-      style: css,
+      style: cell.css,
       title: cell.tooltip,
       onclick: cell.clickHandler,
       class: cell.clickHandler ? 'app-grid-cell-click' : undefined

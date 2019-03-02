@@ -63,29 +63,30 @@ export interface IGridViewColumn extends IGridColumn {
 
 export interface IGridViewRow {
   key?: string;
-  data: { [columnId: string]: IGridViewCell };
+  data: IGridViewCell[];
 }
 
 export interface IGridViewCell {
   value: any;
   tooltip: string;
+  css: string | object;
   clickHandler: (event: KeyboardEvent) => void;
 }
 
 export interface IGridFilter {
   field: string;
   operator:
-    '$includes'
-    | '$excludes'
-    | '$eq'
-    | '$neq'
-    | '$lt'
-    | '$gt'
-    | '$lte'
-    | '$gte'
-    | '$starts-with'
-    | '$ends-with'
-    | '$in-range';
+  '$includes'
+  | '$excludes'
+  | '$eq'
+  | '$neq'
+  | '$lt'
+  | '$gt'
+  | '$lte'
+  | '$gte'
+  | '$starts-with'
+  | '$ends-with'
+  | '$in-range';
   arg: any;
   exclude: boolean;
 }

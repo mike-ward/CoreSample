@@ -1,4 +1,4 @@
-﻿import { IGridModel, IGridColumn, IGridViewRow } from "./grid-types";
+﻿import { IGridModel, IGridViewColumn, IGridViewRow } from "./grid-types";
 import { compareService } from '../../services/compare-service';
 
 type comparerType = (a: any, b: any) => number;
@@ -11,7 +11,7 @@ export function updateSortState(gm: IGridModel, columnId: string) {
   return gm;
 }
 
-export function sortRowsByColumns(columns: IGridColumn[], rows: IGridViewRow[]) {
+export function sortRowsByColumns(columns: IGridViewColumn[], rows: IGridViewRow[]) {
   const sortByStates = columns
     .filter(col => col.sortEnable)
     .filter(col => col.sortDirection);
@@ -24,11 +24,11 @@ export function sortRowsByColumns(columns: IGridColumn[], rows: IGridViewRow[]) 
         ? column.sortComparer
         : compareService.naturalStringCompare;
 
-    const columnId = column.id;
+    const columnIndex = columns.map(c => c.id).indexOf(column.id);
     const sortDirection = column.sortDirection;
 
     rows.sort((a: IGridViewRow, b: IGridViewRow) => {
-      const result = comparer(a.data[columnId].value, b.data[columnId].value);
+      const result = comparer(a.data[columnIndex].value, b.data[columnIndex].value);
       return sortDirection >= 0 ? result : -result;
     });
   }

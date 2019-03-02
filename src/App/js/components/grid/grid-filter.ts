@@ -1,12 +1,12 @@
-﻿import { IGridFilter, IGridViewRow, IGridRow } from "./grid-types";
+﻿import { IGridFilter, IGridViewColumn, IGridRow } from "./grid-types";
 import { compareService } from '../../services/compare-service';
 
-export function evalFilter(filter: IGridFilter, rows: IGridViewRow[]) {
-  var filterFunc = filterFuncFactory(filter);
+export function evalFilter(filter: IGridFilter, columns: IGridViewColumn[], rows: IGridRow[]) {
+  var filterFunc = filterFuncFactory(filter, columns);
   return rows.filter(filterFunc);
 }
 
-function filterFuncFactory(filter: IGridFilter) {
+function filterFuncFactory(filter: IGridFilter, columns: IGridViewColumn[]) {
   const args = Array.isArray(filter.arg)
     ? filter.arg as any[]
     : [filter.arg];
@@ -16,13 +16,15 @@ function filterFuncFactory(filter: IGridFilter) {
       ? predicateArg
       : (n: number) => n === 0;
 
+    const columnIndex = columns.map(c => c.id).indexOf(filter.field);
+
     return filter.exclude
-      ? function (row: IGridViewRow) {
-        const val = row.data[filter.field].value;
+      ? function (row: IGridRow) {
+        const val = row.data[columnIndex].value;
         return args.every(arg => !predicate(cmp(val, arg)))
       }
-      : function (row: IGridViewRow) {
-        const val = row.data[filter.field].value;
+      : function (row: IGridRow) {
+        const val = row.data[columnIndex].value;
         return args.some(arg => predicate(cmp(val, arg)))
       }
   }
