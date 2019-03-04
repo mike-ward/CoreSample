@@ -1,12 +1,11 @@
 ﻿import { IGridFilter, IGridViewColumn, IGridRow } from "./grid-types";
 import { compareService } from '../../services/compare-service';
 
-export function evalFilter(filter: IGridFilter, columns: IGridViewColumn[], rows: IGridRow[]) {
-  var filterFunc = filterFuncFactory(filter, columns);
-  return rows.filter(filterFunc);
+export function filterFactory(columns: IGridViewColumn[], filter: IGridFilter) {
+  return filterFunc(columns, filter);
 }
 
-function filterFuncFactory(filter: IGridFilter, columns: IGridViewColumn[]) {
+function filterFunc(columns: IGridViewColumn[], filter: IGridFilter) {
   const args = Array.isArray(filter.arg)
     ? filter.arg as any[]
     : [filter.arg];

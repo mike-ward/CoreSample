@@ -1,5 +1,6 @@
 ﻿import m from 'mithril';
 import constants from './constants-service';
+import { popupId } from './app-service';
 
 // Pages
 import { layout } from '../components/layout/layout';
@@ -14,6 +15,7 @@ import { login } from '../components/pages/account/login';
 
 export function buildRoutes() {
   const root = document.getElementById('app') as Element;
+
   m.route(root, '',
     {
       // Pages
@@ -32,7 +34,7 @@ function plain(component: m.ComponentTypes, title: string): m.Component {
   return {
     oncreate: () => document.title = `${constants.appTitle} - ${title}`,
     onremove: () => document.title = `${constants.appTitle}`,
-    view: () => m(component)
+    view: () => m('', { onclick: () => popupId(0) }, m(component))
   }
 }
 

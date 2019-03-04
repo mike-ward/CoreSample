@@ -34,12 +34,12 @@ export const grid: m.FactoryComponent<IGridAttrs> = () => {
 function table(vm: IGridViewModel, attrs: IGridAttrs) {
   return vm
     ? [
-      m(vm.columnMenu.gridColumnMenu),
       m('table.app-grid', attrs,
         [
           thead(vm),
           tbody(vm)
-        ])
+        ]),
+      m(vm.columnMenu.gridColumnMenu),
     ]
     : null;
 }
