@@ -1,4 +1,5 @@
-﻿import stream from 'mithril/stream';
+﻿import clone from 'clone';
+import stream from 'mithril/stream';
 import { gridColumnMenuFactory } from './grid-column-menu';
 import { filterFactory } from './grid-filter';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
@@ -27,7 +28,7 @@ function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridM
 function createViewColumns(gm: IGridModel) {
   const viewColumns = gm.columns
     .filter(c => !c.hide)
-    .map(c => ({ ...c } as IGridViewColumn)) // clone
+    .map(c => (clone(c) as IGridViewColumn)) // clone
     .map(c => setMinColumnWidth(c))
     .map(c => addSortClassNames(c));
   return viewColumns;
