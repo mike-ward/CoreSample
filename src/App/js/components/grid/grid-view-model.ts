@@ -1,8 +1,8 @@
 ﻿import stream from 'mithril/stream';
+import { gridColumnMenuFactory } from './grid-column-menu';
+import { filterFactory } from './grid-filter';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
 import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow } from './grid-types';
-import { gridColumnMenuFactory } from './grid-column-menu';
-//import { filterFactory } from './grid-filter';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const columnMenu = gridColumnMenuFactory();
@@ -27,24 +27,27 @@ function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridM
 function createViewColumns(gm: IGridModel) {
   const viewColumns = gm.columns
     .filter(c => !c.hide)
-    .map(c => ({ ...c } as IGridViewColumn))
-    .map(c => adjustWidth(c))
-    .map(c => addClassName(c));
-
+    .map(c => ({ ...c } as IGridViewColumn)) // clone
+    .map(c => setMinColumnWidth(c))
+    .map(c => addSortClassNames(c));
   return viewColumns;
 }
 
 function createViewRows(viewCols: IGridViewColumn[], rows: IGridRow[], key: string, meta: any) {
-  const length = rows.length;
+  const rowsLength = rows.length;
   const vrows: IGridViewRow[] = [];
-  //const filters = [].concat(...viewCols.map(vc => vc.filters)) as IGridFilter[];
-  //const filterFuncs = filters.map(filter => filterFactory(viewCols, filter));
+
+  const filterFuncs = viewCols
+    .filter(vc => vc.filters)
+    .map(vc => vc.filters)
+    .reduce((arr, filter) => arr.concat(filter), []) // flatten
+    .map(filter => filterFactory(viewCols, filter)); // higher order function
 
   // Use loop instead of map for preformance
-  for (let count = 0; count < length; ++count) {
-    //if (filterFuncs.every(filterFunc => filterFunc(rows[count]))) {
-    vrows.push(createViewRow(viewCols, rows[count], key, meta));
-    //}
+  for (let idx = 0; idx < rowsLength; ++idx) {
+    if (filterFuncs.every(filterFunc => filterFunc(rows[idx]))) {
+      vrows.push(createViewRow(viewCols, rows[idx], key, meta));
+    }
   }
 
   sortRowsByColumns(viewCols, vrows);
@@ -90,12 +93,12 @@ function createDataCell(row: IGridRow, col: IGridColumn, meta: any) {
   return cell;
 }
 
-function adjustWidth(col: IGridViewColumn) {
+function setMinColumnWidth(col: IGridViewColumn) {
   col.minWidth = col.minWidth || getTextWidth(col.name + "MM") + 'px';
   return col;
 }
 
-function addClassName(col: IGridViewColumn) {
+function addSortClassNames(col: IGridViewColumn) {
   const classes = ['app-grid-sort-indicator'];
   if (!col.sortDirection) classes.push('app-grid-sort-indicator-hi');
   if (col.sortDirection > 0) classes.push('app-grid-sort-indicator-up');
