@@ -1,5 +1,5 @@
-﻿import clone from 'clone';
-import stream from 'mithril/stream';
+﻿import stream from 'mithril/stream';
+import clone from '../../services/clone-service';
 import { gridColumnMenuFactory } from './grid-column-menu';
 import { filterFactory } from './grid-filter';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
@@ -18,7 +18,7 @@ function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridM
   const viewRows = createViewRows(viewCols, gm.rows, gm.key, gm.meta);
 
   return {
-    columns: viewCols,
+    vcols: viewCols,
     vrows: viewRows,
     updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
     columnMenu: columnMenu
@@ -28,7 +28,7 @@ function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridM
 function createViewColumns(gm: IGridModel) {
   const viewColumns = gm.columns
     .filter(c => !c.hide)
-    .map(c => (clone(c) as IGridViewColumn)) // clone
+    .map(c => clone(c) as IGridViewColumn) // clone
     .map(c => setMinColumnWidth(c))
     .map(c => addSortClassNames(c));
   return viewColumns;
@@ -38,7 +38,7 @@ function createViewRows(viewCols: IGridViewColumn[], rows: IGridRow[], key: stri
   const rowsLength = rows.length;
   const vrows: IGridViewRow[] = [];
 
-  const filterFuncs = viewCols
+  const filters = viewCols
     .filter(vc => vc.filters)
     .map(vc => vc.filters)
     .reduce((arr, filter) => arr.concat(filter), []) // flatten
@@ -46,7 +46,7 @@ function createViewRows(viewCols: IGridViewColumn[], rows: IGridRow[], key: stri
 
   // Use loop instead of map for preformance
   for (let idx = 0; idx < rowsLength; ++idx) {
-    if (filterFuncs.every(filterFunc => filterFunc(rows[idx]))) {
+    if (filters.every(filter => filter(rows[idx]))) {
       vrows.push(createViewRow(viewCols, rows[idx], key, meta));
     }
   }

@@ -71,7 +71,7 @@ test('filter ends with', () => {
 });
 
 function evalFilter(vm: IGridViewModel, filter: IGridFilter) {
-  return vm.vrows.filter(vr => filterFactory(vm.columns, filter)(vr));
+  return vm.vrows.filter(vr => filterFactory(vm.vcols, filter)(vr));
 }
 
 function f(field: string, operator: string, arg: string, exclude: boolean = false) {

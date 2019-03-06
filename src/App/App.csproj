@@ -41,6 +41,7 @@
     <None Remove="js\components\pages\stocks.ts" />
     <None Remove="js\components\popup\popup.ts" />
     <None Remove="js\services\app-service.ts" />
+    <None Remove="js\services\clone-service.ts" />
     <None Remove="js\services\compare-service.ts" />
     <None Remove="js\services\constants-service.ts" />
     <None Remove="js\services\convert-service.ts" />
@@ -52,6 +53,7 @@
     <None Remove="js\services\export-excel-service.ts" />
     <None Remove="js\services\modal-service.ts" />
     <None Remove="js\services\route-service.ts" />
+    <None Remove="js\services\tests\clone-service.spec.ts" />
     <None Remove="js\services\tests\compare-service.spec.ts" />
     <None Remove="js\typings\browser-mock.d.ts" />
   </ItemGroup>
@@ -87,6 +89,7 @@
     <TypeScriptCompile Include="js\components\pages\stocks.ts" />
     <TypeScriptCompile Include="js\components\popup\popup.ts" />
     <TypeScriptCompile Include="js\services\app-service.ts" />
+    <TypeScriptCompile Include="js\services\clone-service.ts" />
     <TypeScriptCompile Include="js\services\compare-service.ts" />
     <TypeScriptCompile Include="js\services\constants-service.ts" />
     <TypeScriptCompile Include="js\services\convert-service.ts" />
@@ -98,6 +101,7 @@
     <TypeScriptCompile Include="js\services\export-excel-service.ts" />
     <TypeScriptCompile Include="js\services\modal-service.ts" />
     <TypeScriptCompile Include="js\services\route-service.ts" />
+    <TypeScriptCompile Include="js\services\tests\clone-service.spec.ts" />
     <TypeScriptCompile Include="js\services\tests\compare-service.spec.ts" />
     <TypeScriptCompile Include="js\typings\browser-mock.d.ts" />
   </ItemGroup>

@@ -46,12 +46,12 @@ function table(vm: IGridViewModel, attrs: IGridAttrs) {
 
 function thead(vm: IGridViewModel) {
   const ths = [];
-  const columns = vm.columns;
-  const columnsLength = vm.columns.length;
+  const vcols = vm.vcols;
+  const vcolsLength = vm.vcols.length;
 
   // Use loops and indexes for performance
-  for (let colIndex = 0; colIndex < columnsLength; ++colIndex) {
-    ths[colIndex] = th(vm, columns[colIndex]);
+  for (let colIndex = 0; colIndex < vcolsLength; ++colIndex) {
+    ths[colIndex] = th(vm, vcols[colIndex]);
   }
   return m('thead', m('tr', ths));
 }
@@ -78,8 +78,8 @@ function tbody(vm: IGridViewModel) {
   for (let rowIndex = 0; rowIndex < rowsCount; ++rowIndex) {
     const tds = [];
     const vrow = vrows[rowIndex];
-    const columnsCount = vrow.data.length;
     const data = vrow.data;
+    const columnsCount = data.length;
 
     for (let colIndex = 0; colIndex < columnsCount; ++colIndex) {
       tds[colIndex] = td(data[colIndex]);
