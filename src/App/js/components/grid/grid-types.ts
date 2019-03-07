@@ -8,6 +8,8 @@ export interface IGridAttrs extends m.Attributes {
 export interface IGridModel {
   columns: IGridColumn[];
   rows: IGridRow[];
+  sorters?: IGridSort[],
+  filters?: IGridFilter[]
 
   /** Used to assoicate DOM elements with data array items. If specified, must be a column id. Typically not needed.*/
   key?: string;
@@ -86,6 +88,11 @@ export interface IGridViewCell {
   tooltip: string;
   css: string | object;
   clickHandler: (event: KeyboardEvent) => void;
+}
+
+export interface IGridSort {
+  direction: -1 | 0 | 1;
+  sortLevel: number;
 }
 
 export interface IGridFilter {

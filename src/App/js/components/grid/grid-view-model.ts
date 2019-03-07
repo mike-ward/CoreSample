@@ -7,28 +7,26 @@ import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGri
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const columnMenu = gridColumnMenuFactory();
-  const vms = model.map<IGridViewModel>(gm => viewModel(model, columnMenu, gm));
+  const vms = model.map<IGridViewModel>(gm => {
+    if (!gm) return null;
+
+    const viewCols = createViewColumns(gm);
+    const viewRows = createViewRows(viewCols, gm.rows, gm.key, gm.meta);
+
+    return {
+      vcols: viewCols,
+      vrows: viewRows,
+      updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
+      columnMenu: columnMenu
+    }
+  });
   return vms;
-}
-
-function viewModel(model: stream.Stream<IGridModel>, columnMenu: any, gm: IGridModel) {
-  if (!gm) return null;
-
-  const viewCols = createViewColumns(gm);
-  const viewRows = createViewRows(viewCols, gm.rows, gm.key, gm.meta);
-
-  return {
-    vcols: viewCols,
-    vrows: viewRows,
-    updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
-    columnMenu: columnMenu
-  }
 }
 
 function createViewColumns(gm: IGridModel) {
   const viewColumns = gm.columns
     .filter(c => !c.hide)
-    .map(c => clone(c) as IGridViewColumn) // clone
+    .map(c => clone(c) as IGridViewColumn)
     .map(c => setMinColumnWidth(c))
     .map(c => addSortClassNames(c));
   return viewColumns;
