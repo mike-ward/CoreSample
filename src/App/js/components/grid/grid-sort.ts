@@ -1,35 +1,40 @@
-﻿import { IGridModel, IGridViewColumn, IGridViewRow } from "./grid-types";
+﻿import { IGridModel, IGridViewColumn, IGridViewRow, SortDirection, IGridSort } from "./grid-types";
 import { compareService } from '../../services/compare-service';
 
 type comparerType = (a: any, b: any) => number;
 
 export function updateSortState(gm: IGridModel, columnId: string) {
-  const column = gm.columns.reduce((a, c) => c.id === columnId ? c : a, null);
-  if (!column.sortDirection) gm.columns.forEach(col => col.sortDirection = col.id === columnId ? 1 : 0)
-  else if (column.sortDirection > 0) column.sortDirection = -1;
-  else if (column.sortDirection < 0) column.sortDirection = 0;
+  // allow only one level for now
+  if (!gm.sorters || gm.sorters[0].id !== columnId) gm.sorters = [];
+
+  let sort = gm.sorters.find(s => s.id === columnId);
+
+  if (!sort) {
+    sort = { id: columnId, direction: SortDirection.none, sortComparer: null }
+    gm.sorters.push(sort);
+  }
+
+  const direction = sort.direction;
+  if (direction === SortDirection.none) sort.direction = SortDirection.ascending;
+  else if (direction === SortDirection.ascending) sort.direction = SortDirection.descending;
+  else sort.direction = SortDirection.none;
   return gm;
 }
 
-export function sortRowsByColumns(columns: IGridViewColumn[], rows: IGridViewRow[]) {
-  const sortByStates = columns
-    .filter(col => col.sortEnable)
-    .filter(col => col.sortDirection);
-  // future: orderby for sort level
+export function sortRowsByColumns(sorters: IGridSort[], columns: IGridViewColumn[], rows: IGridViewRow[]) {
+  for (let sort of sorters || []) {
+    if (sort.direction !== SortDirection.none) {
+      const comparer: comparerType =
+        sort.sortComparer
+          ? sort.sortComparer
+          : compareService.naturalStringCompare;
 
-  for (let column of sortByStates) {
-    // future: add multiple column sort
-    const comparer: comparerType =
-      column.sortComparer
-        ? column.sortComparer
-        : compareService.naturalStringCompare;
+      const columnIndex = columns.map(c => c.id).indexOf(sort.id);
 
-    const columnIndex = columns.map(c => c.id).indexOf(column.id);
-    const sortDirection = column.sortDirection;
-
-    rows.sort((a: IGridViewRow, b: IGridViewRow) => {
-      const result = comparer(a.data[columnIndex].value, b.data[columnIndex].value);
-      return sortDirection >= 0 ? result : -result;
-    });
+      rows.sort((a: IGridViewRow, b: IGridViewRow) => {
+        const result = comparer(a.data[columnIndex].value, b.data[columnIndex].value);
+        return sort.direction === SortDirection.descending ? -result : +result;
+      });
+    }
   }
 }

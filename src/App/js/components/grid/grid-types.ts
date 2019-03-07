@@ -6,10 +6,11 @@ export interface IGridAttrs extends m.Attributes {
 }
 
 export interface IGridModel {
-  columns: IGridColumn[];
   rows: IGridRow[];
+  columns: IGridColumn[];
   sorters?: IGridSort[],
-  filters?: IGridFilter[]
+  filters?: IGridFilter[],
+  ordinals?: number[],
 
   /** Used to assoicate DOM elements with data array items. If specified, must be a column id. Typically not needed.*/
   key?: string;
@@ -19,8 +20,13 @@ export interface IGridModel {
 }
 
 export interface IGridColumn {
+  /** must be unique for a given grid instance */
   id: string;
+
+  /** column header text */
   name: string;
+
+  /** controls visibility of column */
   hide?: boolean;
 
   /** Can use mithril's style strings https://mithril.js.org/hyperscript.html#style-attribute */
@@ -29,29 +35,14 @@ export interface IGridColumn {
   /** tooltip to display when hovering over head cell */
   tooltip?: string;
 
-  /** Determines the order of columns displayed (not implemented) */
-  ordinal?: number;
-
   /** Minimal width of cell (i.e. 5rem, 2pc, 20px, etc.), use 0 for auto calculate */
   minWidth?: string;
 
   /** When enabled, changes cursor to "pointer" and adds direction arrows, click handlers */
   sortEnable?: boolean;
 
-  /** Multi-column sorting order (not implemented) */
-  sortLevel?: number;
-
-  /** 1 = up, -1 = down */
-  sortDirection?: number;
-
-  /** Defaults to compareService.sortAny() when sortAllow is true */
-  sortComparer?: (a: IGridRow, b: IGridRow) => number;
-
   /** When enabled, hamburger icon will display filter dialog */
   filterEnable?: boolean;
-
-  /** Multiple filters supported. */
-  filters?: IGridFilter[];
 
   /** Tooltip to display when hovering over cell */
   cellTooltip?: (value: any, renderedValue: any, column: IGridColumn, row: IGridRow, meta: any) => string;
@@ -90,9 +81,15 @@ export interface IGridViewCell {
   clickHandler: (event: KeyboardEvent) => void;
 }
 
+export enum SortDirection { none = 0, descending = -1, ascending = 1 }
+
 export interface IGridSort {
-  direction: -1 | 0 | 1;
-  sortLevel: number;
+  /** column id */
+  id: string;
+  /** descending, none, ascending */
+  direction: SortDirection;
+  /** Defaults to compareService.naturalStringCompare when sortAllow is true */
+  sortComparer?: (a: IGridRow, b: IGridRow) => number;
 }
 
 export interface IGridFilter {

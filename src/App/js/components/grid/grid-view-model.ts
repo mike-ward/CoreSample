@@ -3,19 +3,19 @@ import clone from '../../services/clone-service';
 import { gridColumnMenuFactory } from './grid-column-menu';
 import { filterFactory } from './grid-filter';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
-import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow } from './grid-types';
+import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow, IGridSort, SortDirection } from './grid-types';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const columnMenu = gridColumnMenuFactory();
   const vms = model.map<IGridViewModel>(gm => {
     if (!gm) return null;
 
-    const viewCols = createViewColumns(gm);
-    const viewRows = createViewRows(viewCols, gm.rows, gm.key, gm.meta);
+    const vcols = createViewColumns(gm);
+    const vrows = createViewRows(gm, vcols);
 
     return {
-      vcols: viewCols,
-      vrows: viewRows,
+      vcols: vcols,
+      vrows: vrows,
       updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
       columnMenu: columnMenu
     }
@@ -28,28 +28,25 @@ function createViewColumns(gm: IGridModel) {
     .filter(c => !c.hide)
     .map(c => clone(c) as IGridViewColumn)
     .map(c => setMinColumnWidth(c))
-    .map(c => addSortClassNames(c));
+    .map(c => addSortClassNames(c, gm.sorters));
   return viewColumns;
 }
 
-function createViewRows(viewCols: IGridViewColumn[], rows: IGridRow[], key: string, meta: any) {
-  const rowsLength = rows.length;
+function createViewRows(gm: IGridModel, vcols: IGridViewColumn[]) {
+  const rowsLength = gm.rows.length;
   const vrows: IGridViewRow[] = [];
 
-  const filters = viewCols
-    .filter(vc => vc.filters)
-    .map(vc => vc.filters)
-    .reduce((arr, filter) => arr.concat(filter), []) // flatten
-    .map(filter => filterFactory(viewCols, filter)); // higher order function
+  const filters = (gm.filters || [])
+    .map(filter => filterFactory(vcols, filter)); // higher order function
 
   // Use loop instead of map for preformance
   for (let idx = 0; idx < rowsLength; ++idx) {
-    if (filters.every(filter => filter(rows[idx]))) {
-      vrows.push(createViewRow(viewCols, rows[idx], key, meta));
+    if (filters.every(filter => filter(gm.rows[idx]))) {
+      vrows.push(createViewRow(vcols, gm.rows[idx], gm.key, gm.meta));
     }
   }
 
-  sortRowsByColumns(viewCols, vrows);
+  sortRowsByColumns(gm.sorters, vcols, vrows);
   return vrows;
 }
 
@@ -97,11 +94,14 @@ function setMinColumnWidth(col: IGridViewColumn) {
   return col;
 }
 
-function addSortClassNames(col: IGridViewColumn) {
+function addSortClassNames(col: IGridViewColumn, sorters: IGridSort[]) {
   const classes = ['app-grid-sort-indicator'];
-  if (!col.sortDirection) classes.push('app-grid-sort-indicator-hi');
-  if (col.sortDirection > 0) classes.push('app-grid-sort-indicator-up');
-  if (col.sortDirection < 0) classes.push('app-grid-sort-indicator-dn');
+
+  const sorter = (sorters || []).find(s => s.id === col.id);
+  if (!sorter) classes.push('app-grid-sort-indicator-hi');
+  else if (sorter.direction === SortDirection.ascending) classes.push('app-grid-sort-indicator-up');
+  else if (sorter.direction === SortDirection.descending) classes.push('app-grid-sort-indicator-dn');
+
   col.classNames = classes.join(' ');
   return col
 }
