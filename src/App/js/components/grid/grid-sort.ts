@@ -3,9 +3,13 @@ import { compareService } from '../../services/compare-service';
 
 type comparerType = (a: any, b: any) => number;
 
-export function updateSortState(gm: IGridModel, columnId: string) {
-  // allow only one level for now
-  if (!gm.sorters || gm.sorters[0].id !== columnId) gm.sorters = [];
+export function updateSortState(gm: IGridModel, columnId: string, multiColumn: boolean) {
+  if (gm.sorters && gm.sorters.length > 1 && !multiColumn) {
+    gm.sorters = null;
+    return gm;
+  }
+
+  if (!gm.sorters) gm.sorters = [];
 
   let sort = gm.sorters.find(s => s.id === columnId);
 
@@ -21,20 +25,35 @@ export function updateSortState(gm: IGridModel, columnId: string) {
   return gm;
 }
 
-export function sortRowsByColumns(sorters: IGridSort[], columns: IGridViewColumn[], rows: IGridViewRow[]) {
-  for (let sort of sorters || []) {
-    if (sort.direction !== SortDirection.none) {
-      const comparer: comparerType =
-        sort.sortComparer
-          ? sort.sortComparer
-          : compareService.naturalStringCompare;
+export function sortRowsByColumns(sorters: IGridSort[], rows: IGridViewRow[], columns: IGridViewColumn[]) {
+  if (!sorters) return;
 
-      const columnIndex = columns.map(c => c.id).indexOf(sort.id);
+  const comparers = sorters
+    .map(s => createComparer(s, columns));
 
-      rows.sort((a: IGridViewRow, b: IGridViewRow) => {
-        const result = comparer(a.data[columnIndex].value, b.data[columnIndex].value);
-        return sort.direction === SortDirection.descending ? -result : +result;
-      });
+  function byComparers(a: IGridViewRow, b: IGridViewRow) {
+    for (let i = 0; i < comparers.length; ++i) {
+      const result = comparers[i](a, b)
+      if (result) return result;
     }
+    return 0;
   }
+
+  rows.sort((a, b) => byComparers(a, b));
+}
+
+function createComparer(sortBy: IGridSort, columns: IGridViewColumn[]) {
+  if (sortBy.direction === SortDirection.none) {
+    return (_a: IGridViewRow, _b: IGridViewRow) => 0;
+  }
+
+  const comparer: comparerType =
+    sortBy.sortComparer
+      ? sortBy.sortComparer
+      : compareService.naturalStringCompare;
+
+  const columnIndex = columns.map(c => c.id).indexOf(sortBy.id);
+
+  return (a: IGridViewRow, b: IGridViewRow) =>
+    comparer(a.data[columnIndex].value, b.data[columnIndex].value) * sortBy.direction;
 }

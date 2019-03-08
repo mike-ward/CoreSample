@@ -7,16 +7,18 @@ import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGri
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const columnMenu = gridColumnMenuFactory();
+
   const vms = model.map<IGridViewModel>(gm => {
     if (!gm) return null;
 
     const vcols = createViewColumns(gm);
     const vrows = createViewRows(gm, vcols);
+    const updateSort = (columnId: string, multiColumn: boolean) => model(updateSortState(gm, columnId, multiColumn));
 
     return {
       vcols: vcols,
       vrows: vrows,
-      updateSort: (columnId: string) => model(updateSortState(gm, columnId)),
+      updateSort: updateSort,
       columnMenu: columnMenu
     }
   });
@@ -46,7 +48,7 @@ function createViewRows(gm: IGridModel, vcols: IGridViewColumn[]) {
     }
   }
 
-  sortRowsByColumns(gm.sorters, vcols, vrows);
+  sortRowsByColumns(gm.sorters, vrows, vcols);
   return vrows;
 }
 

@@ -76,7 +76,7 @@ function evalFilter(vm: IGridViewModel, filter: IGridFilter) {
 
 function f(field: string, operator: string, arg: string, exclude: boolean = false) {
   return {
-    field: field,
+    id: field,
     operator: operator,
     arg: arg,
     exclude: exclude

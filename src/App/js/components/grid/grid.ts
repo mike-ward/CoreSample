@@ -7,8 +7,8 @@ import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
   `div.app-grid                            { overflow-x: auto }
-   table.app-grid                          { border:1px;border-collapse:collapse }
-   .app-grid th                            { background-color:${constants.color.dim1}; color:${constants.color.text}!important }
+   table.app-grid                          { border:1px; border-collapse:collapse }
+   .app-grid th                            { background-color:${constants.color.dim1}; color:${constants.color.text}!important; -moz-user-select: none }
    .app-grid th,
    .app-grid td                            { white-space: nowrap; padding:.2em; text-align: left; border: 1px solid #eee }
    .app-grid-cell-click-action,
@@ -62,9 +62,14 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
       class: column.classNames,
       style: { 'min-width': column.minWidth },
       title: column.tooltip,
-      onclick: column.sortEnable ? () => vm.updateSort(column.id) : undefined
+      onclick: column.sortEnable
+        ? (e: MouseEvent) => {
+          vm.updateSort(column.id, e.ctrlKey);
+          return false;
+        }
+        : undefined
     },
-    m('span.noselect', column.name),
+    m('span', column.name),
     vm.columnMenu.gridColumnMenuIcon()
   );
 }

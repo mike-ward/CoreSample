@@ -15,7 +15,7 @@ function filterFunc(columns: IGridViewColumn[], filter: IGridFilter) {
       ? predicateArg
       : (n: number) => n === 0;
 
-    const columnIndex = columns.map(c => c.id).indexOf(filter.field);
+    const columnIndex = columns.map(c => c.id).indexOf(filter.id);
 
     return filter.exclude
       ? function (row: IGridRow) {

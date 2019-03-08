@@ -61,7 +61,7 @@ export type IGridRow = {
 export interface IGridViewModel {
   vcols: IGridViewColumn[];
   vrows: IGridViewRow[];
-  updateSort: (columnId: string) => void;
+  updateSort: (columnId: string, multiColumn: boolean) => void;
   columnMenu: IGridColumnMenu;
 }
 
@@ -93,7 +93,7 @@ export interface IGridSort {
 }
 
 export interface IGridFilter {
-  field: string;
+  id: string;
   operator:
   '$includes'
   | '$excludes'
