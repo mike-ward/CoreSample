@@ -14,14 +14,14 @@ export function updateSortState(gm: IGridModel, columnId: string, multiColumn: b
   let sort = gm.sorters.find(s => s.id === columnId);
 
   if (!sort) {
-    sort = { id: columnId, direction: SortDirection.none, sortComparer: null }
+    sort = { id: columnId, direction: SortDirection.none }
     gm.sorters.push(sort);
   }
 
   const direction = sort.direction;
   if (direction === SortDirection.none) sort.direction = SortDirection.ascending;
   else if (direction === SortDirection.ascending) sort.direction = SortDirection.descending;
-  else sort.direction = SortDirection.none;
+  else gm.sorters = gm.sorters.filter(s => s.id !== sort.id);
   return gm;
 }
 
@@ -47,12 +47,12 @@ function createComparer(sortBy: IGridSort, columns: IGridViewColumn[]) {
     return (_a: IGridViewRow, _b: IGridViewRow) => 0;
   }
 
-  const comparer: comparerType =
-    sortBy.sortComparer
-      ? sortBy.sortComparer
-      : compareService.naturalStringCompare;
-
   const columnIndex = columns.map(c => c.id).indexOf(sortBy.id);
+
+  const comparer: comparerType =
+    columns[columnIndex].sortComparer
+      ? columns[columnIndex].sortComparer
+      : compareService.naturalStringCompare;
 
   return (a: IGridViewRow, b: IGridViewRow) =>
     comparer(a.data[columnIndex].value, b.data[columnIndex].value) * sortBy.direction;

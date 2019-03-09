@@ -41,6 +41,9 @@ export interface IGridColumn {
   /** When enabled, changes cursor to "pointer" and adds direction arrows, click handlers */
   sortEnable?: boolean;
 
+  /** Defaults to compareService.naturalStringCompare when sortEnable is true */
+  sortComparer?: (a: IGridRow, b: IGridRow) => number;
+
   /** When enabled, hamburger icon will display filter dialog */
   filterEnable?: boolean;
 
@@ -88,8 +91,6 @@ export interface IGridSort {
   id: string;
   /** descending, none, ascending */
   direction: SortDirection;
-  /** Defaults to compareService.naturalStringCompare when sortAllow is true */
-  sortComparer?: (a: IGridRow, b: IGridRow) => number;
 }
 
 export interface IGridFilter {
