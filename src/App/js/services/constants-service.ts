@@ -4,7 +4,8 @@
     text: '#333',
     back: '#fff',
     dim1: 'gainsboro',
-    dim2: '#ccd'
+    dim2: '#ccd',
+    dim3: '#66f'
   },
   border: {
     thin: '1px solid #33d'

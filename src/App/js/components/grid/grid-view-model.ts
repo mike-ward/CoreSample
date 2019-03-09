@@ -30,7 +30,8 @@ function createViewColumns(gm: IGridModel) {
     .filter(c => !c.hide)
     .map(c => clone(c) as IGridViewColumn)
     .map(c => setMinColumnWidth(c))
-    .map(c => addSortClassNames(c, gm.sorters));
+    .map(c => addSortClassNames(c, gm.sorters))
+    .map(c => sortLevelIndicator(c, gm.sorters));
   return viewColumns;
 }
 
@@ -106,6 +107,13 @@ function addSortClassNames(col: IGridViewColumn, sorters: IGridSort[]) {
 
   col.classNames = classes.join(' ');
   return col
+}
+
+function sortLevelIndicator(col: IGridViewColumn, sorters: IGridSort[]) {
+  if (!sorters || sorters.length < 2) return col;
+  const level = sorters.map(s => s.id).indexOf(col.id);
+  col.sortLevel = level + 1;
+  return col;
 }
 
 function getTextWidth(text: string, fontSize = 16) {

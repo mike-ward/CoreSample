@@ -8,9 +8,13 @@ import { gridViewModel } from './grid-view-model';
 export const gridStyles =
   `div.app-grid                            { overflow-x: auto }
    table.app-grid                          { border:1px; border-collapse:collapse }
-   .app-grid th                            { background-color:${constants.color.dim1}; color:${constants.color.text}!important; -moz-user-select: none }
-   .app-grid th,
-   .app-grid td                            { white-space: nowrap; padding:.2em; text-align: left; border: 1px solid #eee }
+   .app-grid th, .app-grid td              { white-space: nowrap; padding: .2rem; text-align: left; border: 1px solid #eee }
+   .app-grid th                            { padding-bottom: .3rem;
+                                             vertical-align: middle;
+                                             color:${constants.color.text} !important;
+                                             background-color: ${constants.color.dim1};
+                                             -moz-user-select: none }
+   .app-grid th sup                        { vertical-align: baseline; position: relative; top: -5px; left: 1.4px; color: ${constants.color.dim3} }
    .app-grid-cell-click-action,
    .app-grid-sort-indicator:hover,
    .app-grid-sort-indicator-up,
@@ -71,7 +75,10 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
       title: column.tooltip,
       onclick: onclick
     },
-    m('span', column.name),
+    m('span', column.name,
+      column.sortLevel
+        ? m('sup', column.sortLevel)
+        : null),
     vm.columnMenu.gridColumnMenuIcon()
   );
 }

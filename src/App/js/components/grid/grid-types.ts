@@ -70,6 +70,7 @@ export interface IGridViewModel {
 
 export interface IGridViewColumn extends IGridColumn {
   classNames: string;
+  sortLevel: number;
 }
 
 export interface IGridViewRow {
