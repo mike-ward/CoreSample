@@ -57,17 +57,19 @@ function thead(vm: IGridViewModel) {
 }
 
 function th(vm: IGridViewModel, column: IGridViewColumn) {
+  const onclick = column.sortEnable
+    ? (e: MouseEvent) => {
+      vm.updateSort(column.id, e.ctrlKey);
+      return false;
+    }
+    : undefined;
+
   return m('th',
     {
       class: column.classNames,
       style: { 'min-width': column.minWidth },
       title: column.tooltip,
-      onclick: column.sortEnable
-        ? (e: MouseEvent) => {
-          vm.updateSort(column.id, e.ctrlKey);
-          return false;
-        }
-        : undefined
+      onclick: onclick
     },
     m('span', column.name),
     vm.columnMenu.gridColumnMenuIcon()

@@ -4,12 +4,16 @@ import { compareService } from '../../services/compare-service';
 type comparerType = (a: any, b: any) => number;
 
 export function updateSortState(gm: IGridModel, columnId: string, multiColumn: boolean) {
-  if (gm.sorters && gm.sorters.length > 1 && !multiColumn) {
-    gm.sorters = null;
-    return gm;
-  }
-
   if (!gm.sorters) gm.sorters = [];
+
+  if (!multiColumn) {
+    if (gm.sorters.length > 1) {
+      gm.sorters = [];
+      return gm;
+    }
+
+    gm.sorters = gm.sorters.filter(s => s.id === columnId);
+  }
 
   let sort = gm.sorters.find(s => s.id === columnId);
 
@@ -18,9 +22,9 @@ export function updateSortState(gm: IGridModel, columnId: string, multiColumn: b
     gm.sorters.push(sort);
   }
 
-  const direction = sort.direction;
-  if (direction === SortDirection.none) sort.direction = SortDirection.ascending;
-  else if (direction === SortDirection.ascending) sort.direction = SortDirection.descending;
+  if (sort.direction === SortDirection.none) sort.direction = SortDirection.ascending;
+  else if (sort.direction === SortDirection.ascending) sort.direction = SortDirection.descending;
+  else if (multiColumn /* sort.direction === SortDireciton.descending */) sort.direction = SortDirection.ascending;
   else gm.sorters = gm.sorters.filter(s => s.id !== sort.id);
   return gm;
 }
