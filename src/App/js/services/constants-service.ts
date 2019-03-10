@@ -1,4 +1,6 @@
-﻿export default {
+﻿declare var __BUILD__: string
+
+export default {
   appTitle: 'My Application',
   color: {
     text: '#333',
@@ -10,5 +12,6 @@
   border: {
     thin: '1px solid #33d'
   },
-  copyright: '© 2019 Some Entity'
+  copyright: '© 2019 Some Entity',
+  version: '0.1.' + __BUILD__
 }

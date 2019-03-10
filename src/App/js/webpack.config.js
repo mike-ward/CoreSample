@@ -1,4 +1,5 @@
 ﻿const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './app.ts',
@@ -20,6 +21,15 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.js']
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      __BUILD__:
+        process.env.APPVEYOR_BUILD_NUMBER
+          ? JSON.stringify(process.env.APPVEYOR_BUILD_NUMBER)
+          : '\"local\"'
+    })
+  ],
 
   stats: {
     all: false,

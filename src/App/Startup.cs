@@ -1,7 +1,6 @@
 ﻿using Carter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +17,6 @@ namespace CoreSample
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddCarter();
         }
 
@@ -36,7 +34,6 @@ namespace CoreSample
             app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            //app.UseMvc();
             app.UseCarter();
         }
     }

@@ -12,6 +12,7 @@ export const footer: m.Component = {
 function footerView() {
   return m('.foot',
     m('hr'),
-    m('', constants.copyright)
+    m('', constants.copyright),
+    m('', 'v: ' + constants.version)
   );
 }
