@@ -24,7 +24,7 @@ export function updateSortState(gm: IGridModel, columnId: string, multiColumn: b
 
   if (sort.direction === SortDirection.none) sort.direction = SortDirection.ascending;
   else if (sort.direction === SortDirection.ascending) sort.direction = SortDirection.descending;
-  else if (multiColumn /* sort.direction === SortDireciton.descending */) sort.direction = SortDirection.ascending;
+  //else if (multiColumn /* sort.direction === SortDireciton.descending */) sort.direction = SortDirection.ascending;
   else gm.sorters = gm.sorters.filter(s => s.id !== sort.id);
   return gm;
 }
