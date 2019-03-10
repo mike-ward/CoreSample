@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Carter;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +23,9 @@ namespace App.Controllers
 
         private static async Task Api(HttpContext ctx, string url)
         {
-            using (var client = new WebClient())
+            using (var client = new HttpClient())
             {
-                var data = await client.DownloadStringTaskAsync(new Uri(url));
+                var data = await client.GetStringAsync(new Uri(url));
                 if (data is null) throw new InvalidProgramException("oops");
                 await ctx.Response.WriteAsync(data);
             }
