@@ -32,11 +32,11 @@ function compareAny(a: any, b: any): number {
 
 function naturalStringCompare(a: string | number, b: string | number): number {
   return naturalStringCompareImplementation(a, b, undefined);
-} 
+}
 
 function naturalStringCompareIgnoreCase(a: string | number, b: string | number): number {
   return naturalStringCompareImplementation(a, b, { sensitivity: 'accent' });
-} 
+}
 
 function naturalStringCompareImplementation(a: string | number, b: string | number, options: any): number {
   enum ClassificationType { Undecided, Alpha, Number }
@@ -45,12 +45,15 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
   const isNumberLike = (a: any) => !isNaN(a);
 
   function getChunk(str: string): ChunkType {
+    const len = str.length;
     const chars: string[] = [];
     let classification: ClassificationType = ClassificationType.Undecided;
     let count = 0;
 
-    for (const c of str) {
+    // loop and index for performance
+    for (let idx = 0; idx < len; ++idx) {
       count++;
+      const c = str.charAt(idx);
       if (classification === ClassificationType.Undecided) {
         classification = isDigit(c) ? ClassificationType.Number : ClassificationType.Alpha;
       }
@@ -97,4 +100,3 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
     b = b.substring(bc.count);
   }
 }
-
