@@ -41,7 +41,6 @@ function naturalStringCompareIgnoreCase(a: string | number, b: string | number):
 function naturalStringCompareImplementation(a: string | number, b: string | number, options: any): number {
   enum ClassificationType { Undecided, Alpha, Number }
   type ChunkType = { content: string, classification: ClassificationType, count: number };
-  const isDigit = (c: any) => c >= '0' && c <= '9' || c === '.';
   const isNumberLike = (a: any) => !isNaN(a);
 
   function getChunk(str: string): ChunkType {
@@ -65,7 +64,7 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
         if (classification === ClassificationType.Alpha && numeric) break;
         if (classification === ClassificationType.Number && !numeric) break;
       }
-      chars.push(c);
+      chars[chars.length] = c; // this is faster in most browsers compared to push
     }
 
     return { content: chars.join(''), classification: classification, count: count };
@@ -98,5 +97,11 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
 
     a = a.substring(ac.count);
     b = b.substring(bc.count);
+  }
+
+  function isDigit(ch: string) {
+    // see https://jsperf.com/isdigit-test
+    const code = ch.charCodeAt(0);
+    return code > 47 && code < 58 || code === 46 // period
   }
 }

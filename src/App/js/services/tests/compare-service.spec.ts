@@ -8,4 +8,5 @@ test('naturalStringComparer should understand numbers', () => {
   expect(compareService.naturalStringCompare('9,001', '9,010')).toBeLessThan(0);
   expect(compareService.naturalStringCompare('9,010', '9,001')).toBeGreaterThan(0);
   expect(compareService.naturalStringCompare('B', 'A')).toBeGreaterThan(0);
+  expect(compareService.naturalStringCompare('125.6', '92.7')).toBeGreaterThan(0);
 })

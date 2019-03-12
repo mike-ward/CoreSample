@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace App.Controllers
 {
-    public class MarketsController : CarterModule
+    public class MarketsModule : CarterModule
     {
-        public MarketsController() : base("api/markets")
+        public MarketsModule() : base("api/markets")
         {
             Get("news", async (ctx) => await Api(ctx, "https://api.iextrading.com/1.0/stock/aapl/news"));
 
@@ -27,6 +27,7 @@ namespace App.Controllers
             {
                 var data = await client.GetStringAsync(new Uri(url));
                 if (data is null) throw new InvalidProgramException("oops");
+                ctx.Response.ContentType = "application/json";
                 await ctx.Response.WriteAsync(data);
             }
         }
