@@ -15,13 +15,14 @@ function naturalStringCompareIgnoreCase(a: string, b: string): number {
 const locale = 'en';
 
 function naturalStringCompareImplementation(a: string, b: string, options: any): number {
+  if (a === null && b === null) return 0;
+  if (a === null) return -1;
+  if (b === null) return 1;
+
   if (isAlpha(a) && isAlpha(b)) return a.localeCompare(b, locale, options)
   if (isNumeric(a) && isNumeric(b)) return +a - +b;
 
   while (true) {
-    if (a === null && b === null) return 0;
-    if (a === null) return -1;
-    if (b === null) return 1;
     if (a.length === 0 && b.length === 0) return 0;
 
     const ac = getChunk(a);
