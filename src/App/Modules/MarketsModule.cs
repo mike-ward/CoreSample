@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Carter;
 using Microsoft.AspNetCore.Http;
 
-namespace App.Controllers
+namespace App.Modules
 {
     public class MarketsModule : CarterModule
     {
@@ -23,13 +23,11 @@ namespace App.Controllers
 
         private static async Task Api(HttpContext ctx, string url)
         {
-            using (var client = new HttpClient())
-            {
-                var data = await client.GetStringAsync(new Uri(url));
-                if (data is null) throw new InvalidProgramException("oops");
-                ctx.Response.ContentType = "application/json";
-                await ctx.Response.WriteAsync(data);
-            }
+            var client = HttpClientFactory.Create();
+            var data = await client.GetStringAsync(new Uri(url));
+            if (data is null) throw new InvalidProgramException("oops");
+            ctx.Response.ContentType = "application/json";
+            await ctx.Response.WriteAsync(data);
         }
     }
 }

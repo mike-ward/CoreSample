@@ -15,29 +15,23 @@ function naturalStringCompareIgnoreCase(a: string, b: string): number {
 const locale = 'en';
 
 function naturalStringCompareImplementation(a: string, b: string, options: any): number {
+  if (isAlpha(a) && isAlpha(b)) return a.localeCompare(b, locale, options)
+  if (isNumeric(a) && isNumeric(b)) return +a - +b;
+
   while (true) {
     if (a === null && b === null) return 0;
     if (a === null) return -1;
     if (b === null) return 1;
-    if (!hasDigits(a) && !hasDigits(b)) return a.localeCompare(b, locale, options)
-    if (isNumber(a) && isNumber(b)) return +a - +b;
-
-    a = a.toString();
-    b = b.toString();
     if (a.length === 0 && b.length === 0) return 0;
 
     const ac = getChunk(a);
     const bc = getChunk(b);
 
-    if (ac.isnum && bc.isnum) {
-      const compare = +ac.value - +bc.value;
-      if (compare < 0) return -1;
-      if (compare > 0) return 1;
-    }
-    else {
-      const result = ac.value.localeCompare(bc.value, locale, options);
-      if (result !== 0) return result;
-    }
+    const compare = ac.isnum && bc.isnum
+      ? +ac.value - +bc.value
+      : ac.value.localeCompare(bc.value, locale, options);
+
+    if (compare) return compare;
 
     a = a.substring(ac.count);
     b = b.substring(bc.count);
@@ -75,20 +69,20 @@ function getChunk(str: string) {
 
   return {
     value: chars,
-    isnum: isnum && isNumber(chars),
+    isnum: isnum && isNumeric(chars),
     count: count
   }
 }
 
-function isNumber(n: any) {
+function isNumeric(n: any) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function hasDigits(s: string) {
+function isAlpha(s: string) {
   const len = s.length;
   for (let i = 0; i < len; ++i) {
     const code = s.charCodeAt(i);
-    if (code >= zero && code <= nine) return true;
+    if (code >= zero && code <= nine) return false;
   }
-  return false;
+  return true;
 }
