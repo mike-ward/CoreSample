@@ -23,8 +23,6 @@ function naturalStringCompareImplementation(a: string, b: string, options: any):
   if (isNumeric(a) && isNumeric(b)) return +a - +b;
 
   while (true) {
-    if (a.length === 0 && b.length === 0) return 0;
-
     const ac = getChunk(a);
     const bc = getChunk(b);
 
@@ -36,6 +34,7 @@ function naturalStringCompareImplementation(a: string, b: string, options: any):
 
     a = a.substring(ac.count);
     b = b.substring(bc.count);
+    if (a.length === 0 && b.length === 0) return 0;
   }
 }
 
@@ -53,7 +52,7 @@ function getChunk(str: string) {
 
   while (count < len) {
     const ch = str.charAt(count++);
-    const code = ch.charCodeAt(0); // comparing numbers is considerably faster
+    const code = ch.charCodeAt(0); // comparing numbers faster
 
     if (classified) {
       if (isnum && code === comma) continue;
