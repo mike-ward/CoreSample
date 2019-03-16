@@ -24,7 +24,6 @@ export function updateSortState(gm: IGridModel, columnId: string, multiColumn: b
 
   if (sort.direction === SortDirection.none) sort.direction = SortDirection.ascending;
   else if (sort.direction === SortDirection.ascending) sort.direction = SortDirection.descending;
-  //else if (multiColumn /* sort.direction === SortDireciton.descending */) sort.direction = SortDirection.ascending;
   else gm.sorters = gm.sorters.filter(s => s.id !== sort.id);
   return gm;
 }
@@ -51,7 +50,7 @@ function createComparer(sortBy: IGridSort, columns: IGridViewColumn[]) {
     return (_a: IGridViewRow, _b: IGridViewRow) => 0;
   }
 
-  const columnIndex = columns.map(c => c.id).indexOf(sortBy.id);
+  const columnIndex = columns.findIndex(c => c.id === sortBy.id);
 
   const comparer: comparerType =
     columns[columnIndex].sortComparer
