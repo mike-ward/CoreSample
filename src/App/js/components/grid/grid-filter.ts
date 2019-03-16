@@ -1,11 +1,12 @@
-﻿import { IGridFilter, IGridViewColumn, IGridRow } from "./grid-types";
-import { compareService } from '../../services/compare-service';
+﻿import { naturalStringCompareIgnoreCase } from '../../services/compare-service';
+import { IFilter } from '../../services/filter-service';
+import { IGridRow, IGridViewColumn } from "./grid-types";
 
-export function filterFactory(columns: IGridViewColumn[], filter: IGridFilter) {
+export function filterFactory(columns: IGridViewColumn[], filter: IFilter) {
   return filterFunc(columns, filter);
 }
 
-function filterFunc(columns: IGridViewColumn[], filter: IGridFilter) {
+function filterFunc(columns: IGridViewColumn[], filter: IFilter) {
   const args = Array.isArray(filter.arg)
     ? filter.arg as any[]
     : [filter.arg];
@@ -52,7 +53,7 @@ function includes(a: any, b: any) {
 }
 
 function compare(a: any, b: any) {
-  return compareService.naturalStringCompareIgnoreCase(a, b);
+  return naturalStringCompareIgnoreCase(a, b);
 }
 
 function startsWith(a: any, b: any) {

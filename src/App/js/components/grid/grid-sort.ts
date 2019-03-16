@@ -1,5 +1,5 @@
-﻿import { IGridModel, IGridViewColumn, IGridViewRow, SortDirection, IGridSort } from "./grid-types";
-import { compareService } from '../../services/compare-service';
+﻿import { naturalStringCompare } from '../../services/compare-service';
+import { IGridModel, IGridSort, IGridViewColumn, IGridViewRow, SortDirection } from "./grid-types";
 
 type comparerType = (a: any, b: any) => number;
 
@@ -55,7 +55,7 @@ function createComparer(sortBy: IGridSort, columns: IGridViewColumn[]) {
   const comparer: comparerType =
     columns[columnIndex].sortComparer
       ? columns[columnIndex].sortComparer
-      : compareService.naturalStringCompare;
+      : naturalStringCompare;
 
   return (a: IGridViewRow, b: IGridViewRow) =>
     comparer(a.data[columnIndex].value, b.data[columnIndex].value) * sortBy.direction;

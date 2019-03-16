@@ -1,8 +1,9 @@
-﻿import '../../../browser-mock';
-import stream from 'mithril/stream';
-import { IGridModel, IGridFilter, IGridViewModel } from "../grid-types";
-import { gridViewModel } from '../grid-view-model';
+﻿import stream from 'mithril/stream';
+import '../../../browser-mock';
+import { IFilter } from '../../../services/filter-service';
 import { filterFactory } from '../grid-filter';
+import { IGridModel, IGridViewModel } from "../grid-types";
+import { gridViewModel } from '../grid-view-model';
 
 test('filter includes', () => {
   const vm = gvm();
@@ -70,7 +71,7 @@ test('filter ends with', () => {
   expect(evalFilter(vm(), f('primaryExchange', '$ends-with', 'arkets', false)).length).toBe(0);
 });
 
-function evalFilter(vm: IGridViewModel, filter: IGridFilter) {
+function evalFilter(vm: IGridViewModel, filter: IFilter) {
   return vm.vrows.filter(vr => filterFactory(vm.vcols, filter)(vr));
 }
 
@@ -80,7 +81,7 @@ function f(field: string, operator: string, arg: string, exclude: boolean = fals
     operator: operator,
     arg: arg,
     exclude: exclude
-  } as IGridFilter;
+  } as IFilter;
 }
 
 function gvm() {

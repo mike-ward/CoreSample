@@ -1,14 +1,8 @@
-﻿export const compareService = {
-  naturalStringCompare: naturalStringCompare,
-  naturalStringCompareIgnoreCase: naturalStringCompareIgnoreCase,
-  locale: () => locale
-}
-
-function naturalStringCompare(a: string, b: string): number {
+﻿export function naturalStringCompare(a: string, b: string): number {
   return naturalStringCompareImplementation(a, b, undefined);
 }
 
-function naturalStringCompareIgnoreCase(a: string, b: string): number {
+export function naturalStringCompareIgnoreCase(a: string, b: string): number {
   return naturalStringCompareImplementation(a, b, { sensitivity: 'accent' });
 }
 

@@ -1,5 +1,6 @@
 ﻿import m from 'mithril';
 import stream from 'mithril/stream';
+import { IFilter } from '../../services/filter-service';
 
 export interface IGridAttrs extends m.Attributes {
   model: stream.Stream<IGridModel>
@@ -9,7 +10,7 @@ export interface IGridModel {
   rows: IGridRow[];
   columns: IGridColumn[];
   sorters?: IGridSort[],
-  filters?: IGridFilter[],
+  filters?: IFilter[],
   ordinals?: number[],
 
   /** Used to assoicate DOM elements with data array items. If specified, must be a column id. Typically not needed.*/
@@ -92,24 +93,6 @@ export interface IGridSort {
   id: string;
   /** descending, none, ascending */
   direction: SortDirection;
-}
-
-export interface IGridFilter {
-  id: string;
-  operator:
-  '$includes'
-  | '$excludes'
-  | '$eq'
-  | '$neq'
-  | '$lt'
-  | '$gt'
-  | '$lte'
-  | '$gte'
-  | '$starts-with'
-  | '$ends-with'
-  | '$in-range';
-  arg: any;
-  exclude: boolean;
 }
 
 export interface IGridColumnMenu {
