@@ -1,9 +1,9 @@
 ﻿import stream from 'mithril/stream';
 import clone from '../../services/clone-service';
+import { filterFactory } from '../../services/filter-service';
 import { gridColumnMenuFactory } from './grid-column-menu';
-import { filterFactory } from './grid-filter';
 import { sortRowsByColumns, updateSortState } from './grid-sort';
-import { IGridColumn, IGridModel, IGridRow, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow, IGridSort, SortDirection } from './grid-types';
+import { IGridColumn, IGridModel, IGridRow, IGridSort, IGridViewCell, IGridViewColumn, IGridViewModel, IGridViewRow, SortDirection } from './grid-types';
 
 export function gridViewModel(model: stream.Stream<IGridModel>) {
   const columnMenu = gridColumnMenuFactory();
@@ -40,7 +40,7 @@ function createViewRows(gm: IGridModel, vcols: IGridViewColumn[]) {
   const vrows: IGridViewRow[] = [];
 
   const filters = (gm.filters || [])
-    .map(filter => filterFactory(vcols, filter)); // higher order function
+    .map(filter => filterFactory(filter));
 
   // Use loop instead of map for preformance
   for (let idx = 0; idx < rowsLength; ++idx) {
