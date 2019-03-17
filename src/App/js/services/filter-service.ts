@@ -1,7 +1,7 @@
 ﻿import { naturalStringCompareIgnoreCase } from './compare-service';
 
 export interface IFilter {
-  getter: (values: any) => any;
+  pull: (values: any) => any;
   operator:
   '$includes'
   | '$excludes'
@@ -19,40 +19,40 @@ export interface IFilter {
 }
 
 export function filterFactory(filter: IFilter) {
+  switch (filter.operator) {
+    case '$includes': return test(filter, includes, n => n >= 0);
+    case '$excludes': return test(filter, includes, n => n === -1);
+    case '$eq': return test(filter, compare, n => n === 0);
+    case '$neq': return test(filter, compare, n => n !== 0);
+    case '$lt': return test(filter, compare, n => n < 0);
+    case '$gt': return test(filter, compare, n => n > 0);
+    case '$lte': return test(filter, compare, n => n <= 0);
+    case '$gte': return test(filter, compare, n => n >= 0);
+    case '$starts-with': return test(filter, startsWith, n => n === 0);
+    case '$ends-with': return test(filter, endsWith, n => n === 0);
+    case '$in-range': return test(filter, inRange, n => n === 0);
+    default: throw filter;
+  }
+}
+
+function test(
+  filter: IFilter,
+  comparer: (a: any, b: any) => number,
+  assert: (n: number) => boolean) {
+  //
   const args = Array.isArray(filter.arg)
     ? filter.arg as any[]
     : [filter.arg];
 
-  function test(cmp: (a: any, b: any) => number, predicateArg?: (n: number) => boolean) {
-    const predicate = predicateArg
-      ? predicateArg
-      : (n: number) => n === 0;
-
-    return filter.exclude
-      ? function (values: any) {
-        const val = filter.getter(values);
-        return args.every(arg => !predicate(cmp(val, arg)))
-      }
-      : function (values: any) {
-        const val = filter.getter(values);
-        return args.some(arg => predicate(cmp(val, arg)))
-      }
-  }
-
-  switch (filter.operator) {
-    case '$includes': return test(includes, n => n >= 0);
-    case '$excludes': return test(includes, n => n === -1);
-    case '$eq': return test(compare);
-    case '$neq': return test(compare, n => n !== 0);
-    case '$lt': return test(compare, n => n < 0);
-    case '$gt': return test(compare, n => n > 0);
-    case '$lte': return test(compare, n => n <= 0);
-    case '$gte': return test(compare, n => n >= 0);
-    case '$starts-with': return test(startsWith);
-    case '$ends-with': return test(endsWith);
-    case '$in-range': return test(inRange);
-    default: return (_: any[]) => false;
-  }
+  return filter.exclude
+    ? function (values: any) {
+      const val = filter.pull(values);
+      return args.every(arg => !assert(comparer(val, arg)))
+    }
+    : function (values: any) {
+      const val = filter.pull(values);
+      return args.some(arg => assert(comparer(val, arg)))
+    }
 }
 
 function includes(a: any, b: any) {

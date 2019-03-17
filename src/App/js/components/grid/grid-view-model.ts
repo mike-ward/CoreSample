@@ -42,10 +42,11 @@ function createViewRows(gm: IGridModel, vcols: IGridViewColumn[]) {
   const filters = (gm.filters || [])
     .map(filter => filterFactory(filter));
 
-  // Use loop instead of map for preformance
+  // loop instead for preformance;
   for (let idx = 0; idx < rowsLength; ++idx) {
-    if (filters.every(filter => filter(gm.rows[idx]))) {
-      vrows.push(createViewRow(vcols, gm.rows[idx], gm.key, gm.meta));
+    const row = gm.rows[idx]
+    if (filters.every(filter => filter(row))) {
+      vrows.push(createViewRow(vcols, row, gm.key, gm.meta));
     }
   }
 

@@ -2,80 +2,78 @@
 import { filterFactory } from '../filter-service';
 import { IGridModel, IGridRow } from "../../components/grid/grid-types";
 
+const gm = model();
+
 test('filter includes', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('companyName', '$includes', ' inc.', false)).length).toBe(6);
-  expect(evalFilter(gm, f('companyName', '$includes', ' inc.', true)).length).toBe(4);
-  expect(evalFilter(gm, f('week52High', '$includes', '.75', false)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$includes', ' inc.', false)).length).toBe(6);
+  expect(filtering(gm, f('companyName', '$includes', ' inc.', true)).length).toBe(4);
+  expect(filtering(gm, f('week52High', '$includes', '.75', false)).length).toBe(1);
 });
 
 test('filter excludes', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('companyName', '$excludes', ' inc.', false)).length).toBe(4);
-  expect(evalFilter(gm, f('companyName', '$excludes', ' inc.', true)).length).toBe(6);
-  expect(evalFilter(gm, f('week52High', '$excludes', '.75', false)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$excludes', ' inc.', false)).length).toBe(4);
+  expect(filtering(gm, f('companyName', '$excludes', ' inc.', true)).length).toBe(6);
+  expect(filtering(gm, f('week52High', '$excludes', '.75', false)).length).toBe(9);
 });
 
 test('filter equals', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('companyName', '$eq', 'Overstock.com Inc.', false)).length).toBe(1);
-  expect(evalFilter(gm, f('companyName', '$eq', 'Overstock.com Inc.', true)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', false)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', true)).length).toBe(9);
+});
+
+test('filter with multiple arguments', () => {
+  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], false)).length).toBe(2);
+  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], true)).length).toBe(8);
 });
 
 test('filter not equals', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('companyName', '$neq', 'Overstock.com Inc.', false)).length).toBe(9);
-  expect(evalFilter(gm, f('companyName', '$neq', 'Overstock.com Inc.', true)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', false)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', true)).length).toBe(1);
 });
 
 test('filter less than', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('latestPrice', '$lt', '25', false)).length).toBe(7);
-  expect(evalFilter(gm, f('latestPrice', '$lt', '25', true)).length).toBe(3);
+  expect(filtering(gm, f('latestPrice', '$lt', '25', false)).length).toBe(7);
+  expect(filtering(gm, f('latestPrice', '$lt', '25', true)).length).toBe(3);
 });
 
 test('filter greater than', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('latestPrice', '$gt', '25', false)).length).toBe(2);
-  expect(evalFilter(gm, f('latestPrice', '$gt', '25', true)).length).toBe(8);
+  expect(filtering(gm, f('latestPrice', '$gt', '25', false)).length).toBe(2);
+  expect(filtering(gm, f('latestPrice', '$gt', '25', true)).length).toBe(8);
 });
 
 test('filter less than or equal', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('latestPrice', '$lte', '25', false)).length).toBe(8);
-  expect(evalFilter(gm, f('latestPrice', '$lte', '25', true)).length).toBe(2);
+  expect(filtering(gm, f('latestPrice', '$lte', '25', false)).length).toBe(8);
+  expect(filtering(gm, f('latestPrice', '$lte', '25', true)).length).toBe(2);
 });
 
 test('filter greater than or equal', () => {
   const gm = model();
-  expect(evalFilter(gm, f('latestPrice', '$gte', '25', false)).length).toBe(3);
-  expect(evalFilter(gm, f('latestPrice', '$gte', '25', true)).length).toBe(7);
+  expect(filtering(gm, f('latestPrice', '$gte', '25', false)).length).toBe(3);
+  expect(filtering(gm, f('latestPrice', '$gte', '25', true)).length).toBe(7);
 });
 
 test('filter starts with', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('primaryExchange', '$starts-with', 'NASDAQ', false)).length).toBe(9);
-  expect(evalFilter(gm, f('primaryExchange', '$starts-with', 'nAsDAq', false)).length).toBe(9);
-  expect(evalFilter(gm, f('primaryExchange', '$starts-with', 'NASDAQ', true)).length).toBe(1);
-  expect(evalFilter(gm, f('primaryExchange', '$starts-with', 'XASDAQ', false)).length).toBe(0);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', false)).length).toBe(9);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'nAsDAq', false)).length).toBe(9);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', true)).length).toBe(1);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'XASDAQ', false)).length).toBe(0);
 });
 
 test('filter ends with', () => {
-  const gm = model();
-  expect(evalFilter(gm, f('primaryExchange', '$ends-with', 'Market', false)).length).toBe(2);
-  expect(evalFilter(gm, f('primaryExchange', '$ends-with', 'market', false)).length).toBe(2);
-  expect(evalFilter(gm, f('primaryExchange', '$ends-with', 'Market', true)).length).toBe(8);
-  expect(evalFilter(gm, f('primaryExchange', '$ends-with', 'arkets', false)).length).toBe(0);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', false)).length).toBe(2);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'market', false)).length).toBe(2);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', true)).length).toBe(8);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'arkets', false)).length).toBe(0);
 });
 
-function evalFilter(gm: IGridModel, filter: IFilter) {
+function filtering(gm: IGridModel, filter: IFilter) {
   const filterFunc = filterFactory(filter);
   return gm.rows.filter(row => filterFunc(row));
 }
 
-function f(field: string, operator: string, arg: string, exclude: boolean = false) {
+function f(field: string, operator: string, arg: string | any[], exclude: boolean = false) {
   return {
-    getter: (row: IGridRow) => row[field],
+    pull: (row: IGridRow) => row[field],
     operator: operator,
     arg: arg,
     exclude: exclude
