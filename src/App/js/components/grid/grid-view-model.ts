@@ -42,7 +42,7 @@ function createViewRows(gm: IGridModel, vcols: IGridViewColumn[]) {
   const filters = (gm.filters || [])
     .map(filter => filterFactory(filter));
 
-  // loop instead for preformance;
+  // loop for preformance
   for (let idx = 0; idx < rowsLength; ++idx) {
     const row = gm.rows[idx]
     if (filters.every(filter => filter(row))) {
@@ -58,13 +58,13 @@ function createViewRow(columns: IGridColumn[], gridRow: IGridRow, key: string, m
   const data = [];
   const length = columns.length;
 
-  // Use loop and index for preformance
+  // loop and index for preformance
   for (let col = 0; col < length; ++col) {
     data[col] = createDataCell(gridRow, columns[col], meta);
   }
 
   const row = { data: data } as IGridViewRow;
-  // Only create key if value defined to reduce memory footprint
+  // create key only if value defined to reduce memory footprint
   if (key) row.key = gridRow[key]
   return row;
 }
@@ -112,7 +112,7 @@ function addSortClassNames(col: IGridViewColumn, sorters: IGridSort[]) {
 
 function sortLevelIndicator(col: IGridViewColumn, sorters: IGridSort[]) {
   if (!sorters || sorters.length < 2) return col;
-  const level = sorters.map(s => s.id).indexOf(col.id);
+  const level = sorters.findIndex(sort => sort.id === col.id);
   col.sortLevel = level + 1;
   return col;
 }

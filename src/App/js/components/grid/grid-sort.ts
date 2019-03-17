@@ -11,7 +11,6 @@ export function updateSortState(gm: IGridModel, columnId: string, multiColumn: b
       gm.sorters = [];
       return gm;
     }
-
     gm.sorters = gm.sorters.filter(s => s.id === columnId);
   }
 
@@ -32,7 +31,9 @@ export function sortRowsByColumns(sorters: IGridSort[], rows: IGridViewRow[], co
   if (!sorters) return;
 
   const comparers = sorters
-    .map(s => createComparer(s, columns));
+    .map(s => comparerFactory(s, columns));
+
+  if (comparers.length === 0) return;
 
   function byComparers(a: IGridViewRow, b: IGridViewRow) {
     for (let i = 0; i < comparers.length; ++i) {
@@ -45,7 +46,7 @@ export function sortRowsByColumns(sorters: IGridSort[], rows: IGridViewRow[], co
   rows.sort((a, b) => byComparers(a, b));
 }
 
-function createComparer(sortBy: IGridSort, columns: IGridViewColumn[]) {
+function comparerFactory(sortBy: IGridSort, columns: IGridViewColumn[]) {
   if (sortBy.direction === SortDirection.none) {
     return (_a: IGridViewRow, _b: IGridViewRow) => 0;
   }

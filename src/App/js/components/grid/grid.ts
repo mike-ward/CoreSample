@@ -53,7 +53,7 @@ function thead(vm: IGridViewModel) {
   const vcols = vm.vcols;
   const vcolsLength = vm.vcols.length;
 
-  // Use loops and indexes for performance
+  // loop and indexe for performance
   for (let colIndex = 0; colIndex < vcolsLength; ++colIndex) {
     ths[colIndex] = th(vm, vcols[colIndex]);
   }
@@ -88,7 +88,7 @@ function tbody(vm: IGridViewModel) {
   const vrows = vm.vrows;
   const rowsCount = vm.vrows.length;
 
-  // Use loops and indexes for performance
+  // loops and indexes for performance
   for (let rowIndex = 0; rowIndex < rowsCount; ++rowIndex) {
     const tds = [];
     const vrow = vrows[rowIndex];
