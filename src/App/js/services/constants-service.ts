@@ -12,6 +12,9 @@ export default {
   border: {
     thin: '1px solid #33d'
   },
+  html: {
+    nbsp: '\u00A0'
+  },
   copyright: '© 2019 Some Entity',
   version: '0.1.' + __BUILD__
 }

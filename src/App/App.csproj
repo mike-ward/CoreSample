@@ -39,7 +39,12 @@
     <None Remove="js\components\pages\news.ts" />
     <None Remove="js\components\pages\splash.ts" />
     <None Remove="js\components\pages\stocks.ts" />
-    <None Remove="js\components\popup\popup.ts" />
+    <None Remove="js\components\selection\checkbox-item-list.ts" />
+    <None Remove="js\components\selection\checkbox-item.ts" />
+    <None Remove="js\components\selection\select-checkbox-item-list.ts" />
+    <None Remove="js\components\selection\tests\checkbox-item-list.spec.ts" />
+    <None Remove="js\components\selection\tests\checkbox-item.spec.ts" />
+    <None Remove="js\components\selection\tests\select-checkbox-item-list.spec.ts" />
     <None Remove="js\services\app-service.ts" />
     <None Remove="js\services\clone-service.ts" />
     <None Remove="js\services\compare-service.ts" />
@@ -74,7 +79,6 @@
     <TypeScriptCompile Include="js\components\grid\grid-types.ts" />
     <TypeScriptCompile Include="js\components\grid\grid-view-model.ts" />
     <TypeScriptCompile Include="js\components\grid\grid.ts" />
-    <TypeScriptCompile Include="js\components\grid\tests\grid-filter.spec.ts" />
     <TypeScriptCompile Include="js\components\layout\footer.ts" />
     <TypeScriptCompile Include="js\components\layout\header.ts" />
     <TypeScriptCompile Include="js\components\layout\layout.ts" />
@@ -89,7 +93,12 @@
     <TypeScriptCompile Include="js\components\pages\news.ts" />
     <TypeScriptCompile Include="js\components\pages\splash.ts" />
     <TypeScriptCompile Include="js\components\pages\stocks.ts" />
-    <TypeScriptCompile Include="js\components\popup\popup.ts" />
+    <TypeScriptCompile Include="js\components\selection\checkbox-item.ts" />
+    <TypeScriptCompile Include="js\components\selection\checkbox-item-list.ts" />
+    <TypeScriptCompile Include="js\components\selection\select-checkbox-item-list.ts" />
+    <TypeScriptCompile Include="js\components\selection\tests\checkbox-item-list.spec.ts" />
+    <TypeScriptCompile Include="js\components\selection\tests\checkbox-item.spec.ts" />
+    <TypeScriptCompile Include="js\components\selection\tests\select-checkbox-item-list.spec.ts" />
     <TypeScriptCompile Include="js\services\app-service.ts" />
     <TypeScriptCompile Include="js\services\clone-service.ts" />
     <TypeScriptCompile Include="js\services\compare-service.ts" />
@@ -107,6 +116,10 @@
     <TypeScriptCompile Include="js\services\tests\clone-service.spec.ts" />
     <TypeScriptCompile Include="js\services\tests\compare-service.spec.ts" />
     <TypeScriptCompile Include="js\typings\browser-mock.d.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="js\components\grid\tests\" />
   </ItemGroup>
 
   <Target Name="BuildWebAssets" AfterTargets="AfterBuild">
