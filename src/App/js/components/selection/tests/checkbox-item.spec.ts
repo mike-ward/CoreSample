@@ -12,7 +12,7 @@ test('checkboxItem should have label and checkbox', () => {
 
   const out = mq(checkboxItem, { model: item });
   out.should.have(1, 'label.checkbox');
-  out.should.have(1, 'label:contains(' + constants.html.nbsp + 'item)');
   out.should.have(1, 'input[type=checkbox]');
   out.should.have(1, 'input[checked]');
+  out.should.contain(constants.html.nbsp + 'item');
 })
