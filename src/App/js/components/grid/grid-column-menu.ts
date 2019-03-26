@@ -1,8 +1,10 @@
 ﻿import m from 'mithril';
+import stream from 'mithril/stream';
 import { popupId } from '../../services/app-service';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
-import { IGridColumnMenu } from './grid-types';
+import { gridFilterSelect } from './grid-filter';
+import { IGridColumnMenu, IGridColumnMenuAttrs, IGridModel } from './grid-types';
 
 cssStylesAdd(
   `.app-grid-column-menu-icon                      { padding-right: .3rem; display: inline-block; float: right; color: ${constants.color.dim1} }
@@ -17,6 +19,7 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
   const model = {
     top: '0',
     left: '0',
+    columnId: '',
     popupId: Math.random(),
     currentTarget: null as EventTarget
   }
@@ -26,12 +29,17 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
     gridColumnMenu: gridColumnMenu
   }
 
-  function gridColumnMenuIcon(): m.Vnode {
-    return m('.app-grid-column-menu-icon', { onclick: showColumnMenu }, '☰');
+  function gridColumnMenuIcon(columnId: string): m.Vnode {
+    return m('.app-grid-column-menu-icon', {
+      onclick: (e: Event) => showColumnMenu(e, columnId)
+    }, '☰');
   }
 
-  function gridColumnMenu(): m.Component {
+  function gridColumnMenu(): m.Component<IGridColumnMenuAttrs> {
+    let gm: stream.Stream<IGridModel>;
+
     return {
+      oninit: vn => gm = vn.attrs.model,
       view: view
     }
 
@@ -44,21 +52,19 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
       const vnode =
         popupId() === model.popupId
           ? m('.app-grid-column-menu', { style: styles },
-            head()
+            m('.app-grid-column-menu-head',
+              m(gridFilterSelect, { columnId: model.columnId, gridModel: gm })
+            )
           )
           : null;
 
       return vnode;
     }
-
-    function head() {
-      return m('.app-grid-column-menu-head',
-        'this space for rent');
-    }
   }
 
-  function showColumnMenu(ev: Event) {
+  function showColumnMenu(ev: Event, columnId: string) {
     ev.stopPropagation();
+    model.columnId = columnId;
     showState(ev.currentTarget);
     placement(ev.currentTarget as HTMLElement)
   }

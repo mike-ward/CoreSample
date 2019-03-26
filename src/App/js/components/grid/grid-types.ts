@@ -95,7 +95,11 @@ export interface IGridSort {
   direction: SortDirection;
 }
 
+export interface IGridColumnMenuAttrs extends m.Attributes {
+  model: stream.Stream<IGridModel>;
+}
+
 export interface IGridColumnMenu {
-  gridColumnMenuIcon: () => m.Vnode,
-  gridColumnMenu: () => m.Component
+  gridColumnMenuIcon: (columnId: string) => m.Vnode,
+  gridColumnMenu: () => m.Component<IGridColumnMenuAttrs>
 }

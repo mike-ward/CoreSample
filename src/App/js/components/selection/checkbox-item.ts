@@ -22,10 +22,10 @@ export const checkboxItem: m.FactoryComponent<ICheckboxItemAttrs> = () => {
 }
 
 function render(item: ICheckboxItem) {
-  return m('',
+  return m('.control',
     m('label.checkbox',
-      constants.html.nbsp + item.name,
-      renderCheckbox(item))
+      renderCheckbox(item)),
+      constants.html.nbsp + item.name
   );
 }
 

@@ -2,7 +2,7 @@
 import stream from 'mithril/stream';
 import constants from '../../services/constants-service';
 import { cssStylesAdd } from '../../services/css-service';
-import { IGridAttrs, IGridViewCell, IGridViewColumn, IGridViewModel } from './grid-types';
+import { IGridAttrs, IGridModel, IGridViewCell, IGridViewColumn, IGridViewModel } from './grid-types';
 import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
@@ -31,11 +31,11 @@ export const grid: m.FactoryComponent<IGridAttrs> = () => {
 
   return {
     oninit: vn => vm = gridViewModel(vn.attrs.model),
-    view: vn => m('.app-grid', table(vm(), vn.attrs)),
+    view: vn => m('.app-grid', table(vm(), vn.attrs.model, vn.attrs)),
   }
 }
 
-function table(vm: IGridViewModel, attrs: IGridAttrs) {
+function table(vm: IGridViewModel, gm: stream.Stream<IGridModel>, attrs: IGridAttrs) {
   return vm
     ? [
       m('table.app-grid', attrs,
@@ -43,7 +43,7 @@ function table(vm: IGridViewModel, attrs: IGridAttrs) {
           thead(vm),
           tbody(vm)
         ]),
-      m(vm.columnMenu.gridColumnMenu),
+      m(vm.columnMenu.gridColumnMenu, { model: gm }),
     ]
     : null;
 }
@@ -79,7 +79,7 @@ function th(vm: IGridViewModel, column: IGridViewColumn) {
       column.sortLevel
         ? m('sup', column.sortLevel)
         : null),
-    vm.columnMenu.gridColumnMenuIcon()
+    vm.columnMenu.gridColumnMenuIcon(column.id)
   );
 }
 
