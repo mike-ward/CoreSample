@@ -5,6 +5,9 @@ import { gridToExcel } from '../../services/export-excel-service';
 import { grid } from '../grid/grid';
 import { IGridColumn, IGridModel } from '../grid/grid-types';
 import { loading } from '../loading/loading';
+import { cssStylesAdd } from '../../services/css-service';
+
+cssStylesAdd(`div.stocks .app-grid { font-size:small }`);
 
 export const stocks: m.FactoryComponent = () => {
   let model: IModel;
@@ -19,14 +22,14 @@ export const stocks: m.FactoryComponent = () => {
   }
 
   function stocksView() {
-    return m('div',
+    return m('.stocks',
       m('.page-title', `Stocks`),
       m('p', `Count: ${model.stocks() ? model.stocks().rows.length : 0}`),
       model.stocks()
-        ? [
-          exportButton(),
-          m(grid, { model: model.stocks, style: 'font-size:smaller' })
-        ]
+        ? m('',
+            exportButton(),
+            m(grid, { model: model.stocks })
+        )
         : m(loading));
   }
 

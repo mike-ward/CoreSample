@@ -7,12 +7,16 @@ import { gridFilterSelect } from './grid-filter';
 import { IGridColumnMenu, IGridColumnMenuAttrs, IGridModel } from './grid-types';
 
 cssStylesAdd(
-  `.app-grid-column-menu-icon                      { padding-right: .3rem; display: inline-block; float: right; color: ${constants.color.dim1} }
-   .app-grid th:hover > .app-grid-column-menu-icon { color:${constants.color.dim2} }
-   .app-grid-column-menu-icon:hover                { color: ${constants.color.text} !important; }
+  `.app-grid-column-menu-icon                         { padding-right: .3rem; display: inline-block; float: right; color: ${constants.color.dim1} }
+   .app-grid th:hover > .app-grid-column-menu-icon    { color:${constants.color.dim2} }
+   .app-grid-column-menu-icon:hover                   { color: ${constants.color.text} !important; }
 
-   .app-grid-column-menu                           { position: absolute; border: ${constants.border.thin}; background-color: ${constants.color.back} }
-   .app-grid-column-menu-head                      { padding: .5rem; }
+   .app-grid-column-menu                              { position: absolute;
+                                                        border: ${constants.border.thin};
+                                                        background-color: ${constants.color.back} }
+   .app-grid-column-menu-head                         { padding: .5rem; max-height: 25rem; }
+   .app-grid-column-menu-head .selectCheckboxItemList { max-height: 22rem; }
+   .app-grid-column-menu-hr                           { margin: .3rem }
   `);
 
 export function gridColumnMenuFactory(): IGridColumnMenu {
@@ -53,6 +57,8 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
         popupId() === model.popupId
           ? m('.app-grid-column-menu', { style: styles },
             m('.app-grid-column-menu-head',
+              title(model.columnId, gm()),
+              m('hr.app-grid-column-menu-hr'),
               m(gridFilterSelect, { columnId: model.columnId, gridModel: gm })
             )
           )
@@ -60,6 +66,11 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
 
       return vnode;
     }
+  }
+
+  function title(columnId: string, gridModel: IGridModel) {
+    const title = gridModel.columns.find(c => c.id === columnId).name;
+    return m('.bold', title);
   }
 
   function showColumnMenu(ev: Event, columnId: string) {
