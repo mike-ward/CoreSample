@@ -10,11 +10,8 @@ export interface IGridFilterSelectAttrs extends m.Attributes {
 }
 
 export const gridFilterSelect: m.FactoryComponent<IGridFilterSelectAttrs> = () => {
-  let selectCheckboxItems: ISelectCheckboxItemList;
-
   return {
-    oninit: vn => selectCheckboxItems = pickList(vn.attrs.columnId, vn.attrs.gridModel()),
-    view: _vn => render(selectCheckboxItems)
+    view: vn => render(pickList(vn.attrs.columnId, vn.attrs.gridModel()))
   }
 }
 
@@ -33,5 +30,6 @@ function pickList(columnId: string, gridModel: IGridModel) {
 }
 
 function render(items: ISelectCheckboxItemList) {
+  console.log(items)
   return m(selectCheckboxItemList, { model: items });
 }

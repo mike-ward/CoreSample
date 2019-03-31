@@ -1,9 +1,6 @@
 ﻿import m from 'mithril';
 import { checkboxItem, ICheckboxItem } from './checkbox-item';
 import { checkboxItemList } from './checkbox-item-list';
-import { cssStylesAdd } from '../../services/css-service';
-
-cssStylesAdd('.selectCheckboxItemList { overflow-y: scroll }');
 
 export interface ISelectCheckboxItemList {
   selectAll: boolean;
@@ -15,19 +12,16 @@ export interface ISelectCheckboxItemListAttrs extends m.Attributes {
   model: ISelectCheckboxItemList
 }
 export const selectCheckboxItemList: m.FactoryComponent<ISelectCheckboxItemListAttrs> = () => {
-  let vm: ISelectCheckboxItemList;
-
   return {
-    oninit: vn => vm = vn.attrs.model,
-    view: _vn => render(vm)
+    view: vn => render(vn.attrs.model)
   }
 
   function render(model: ISelectCheckboxItemList) {
     const selectAllModel = {
       name: '(Select All)',
       value: '',
-      checked: vm.selectAll,
-      onchange: (e: Event) => selectAllChanged((e.target as HTMLInputElement).checked, vm)
+      checked: model.selectAll,
+      onchange: (e: Event) => selectAllChanged((e.target as HTMLInputElement).checked, model)
     }
 
     return m('.selectCheckboxItemList',

@@ -68,8 +68,8 @@ function getChunk(str: string) {
   }
 }
 
-function isNumeric(n: any) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+function isNumeric(n: string) {
+  return !isNaN(+n);
 }
 
 function isAlpha(s: string) {

@@ -14,8 +14,8 @@ cssStylesAdd(
    .app-grid-column-menu                              { position: absolute;
                                                         border: ${constants.border.thin};
                                                         background-color: ${constants.color.back} }
-   .app-grid-column-menu-head                         { padding: .5rem; max-height: 25rem; }
-   .app-grid-column-menu-head .selectCheckboxItemList { max-height: 22rem; }
+   .app-grid-column-menu-head                         { padding: .5rem; max-height: 25rem; overflow-y: scroll; }
+   .app-grid-column-menu-head .selectCheckboxItemList { max-height: 100%; }
    .app-grid-column-menu-hr                           { margin: .3rem }
   `);
 
@@ -82,8 +82,8 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
 
   function placement(target: HTMLElement) {
     const rect = target.getBoundingClientRect();
-    model.top = rect.bottom + 'px';
-    model.left = rect.left + 'px';
+    model.top = window.scrollY + rect.bottom + 'px';
+    model.left = window.scrollX + rect.left + 'px';
   }
 
   function showState(currentTarget: EventTarget) {

@@ -13,11 +13,9 @@ export interface ICheckboxItemAttrs extends m.Attributes {
 }
 
 export const checkboxItem: m.FactoryComponent<ICheckboxItemAttrs> = () => {
-  let vm: ICheckboxItem;
 
   return {
-    oninit: vn => vm = vn.attrs.model,
-    view: _vn => render(vm)
+    view: vn => render(vn.attrs.model)
   }
 }
 
