@@ -55,7 +55,10 @@ export function gridColumnMenuFactory(): IGridColumnMenu {
 
       const vnode =
         popupId() === model.popupId
-          ? m('.app-grid-column-menu', { style: styles },
+          ? m('.app-grid-column-menu', {
+            style: styles,
+            onclick: (e: Event) => e.stopPropagation()
+          },
             m('.app-grid-column-menu-head',
               title(model.columnId, gm()),
               m('hr.app-grid-column-menu-hr'),

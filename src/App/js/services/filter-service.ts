@@ -2,6 +2,7 @@
 
 export interface IFilter {
   pull: (values: any) => any;
+  comparer?: (a: any, b: any) => number;
   operator:
   '$includes'
   | '$excludes'
@@ -19,18 +20,20 @@ export interface IFilter {
 }
 
 export function filterFactory(filter: IFilter) {
+  const comparer = filter.comparer || naturalStringCompareIgnoreCase;
+
   switch (filter.operator) {
     case '$includes': return test(filter, includes, n => n >= 0);
     case '$excludes': return test(filter, includes, n => n === -1);
-    case '$eq': return test(filter, compare, n => n === 0);
-    case '$neq': return test(filter, compare, n => n !== 0);
-    case '$lt': return test(filter, compare, n => n < 0);
-    case '$gt': return test(filter, compare, n => n > 0);
-    case '$lte': return test(filter, compare, n => n <= 0);
-    case '$gte': return test(filter, compare, n => n >= 0);
-    case '$starts-with': return test(filter, startsWith, n => n === 0);
-    case '$ends-with': return test(filter, endsWith, n => n === 0);
-    case '$in-range': return test(filter, inRange, n => n === 0);
+    case '$eq': return test(filter, comparer, n => n === 0);
+    case '$neq': return test(filter, comparer, n => n !== 0);
+    case '$lt': return test(filter, comparer, n => n < 0);
+    case '$gt': return test(filter, comparer, n => n > 0);
+    case '$lte': return test(filter, comparer, n => n <= 0);
+    case '$gte': return test(filter, comparer, n => n >= 0);
+    case '$starts-with': return test(filter, (a, b) => startsWith(a, b, comparer), n => n === 0);
+    case '$ends-with': return test(filter, (a, b) => endsWith(a, b, comparer), n => n === 0);
+    case '$in-range': return test(filter, (a, b) => inRange(a, b, comparer), n => n === 0);
     default: throw filter;
   }
 }
@@ -61,20 +64,16 @@ function includes(a: any, b: any) {
   return sa.indexOf(sb);
 }
 
-function compare(a: any, b: any) {
-  return naturalStringCompareIgnoreCase(a, b);
-}
-
-function startsWith(a: any, b: any) {
+function startsWith(a: any, b: any, comparer: (a: any, b: any) => number) {
   const start = a.substring(0, b.length);
-  return compare(start, b);
+  return comparer(start, b);
 }
 
-function endsWith(a: any, b: any) {
+function endsWith(a: any, b: any, comparer: (a: any, b: any) => number) {
   const end = a.substring(a.length - b.length);
-  return compare(end, b);
+  return comparer(end, b);
 }
 
-function inRange(a: any, b: any) {
-  return compare(a, b[0]) >= 0 && compare(a, b[1]) <= 0 ? 0 : 1;
+function inRange(a: any, b: any, comparer: (a: any, b: any) => number) {
+  return comparer(a, b[0]) >= 0 && comparer(a, b[1]) <= 0 ? 0 : 1;
 }

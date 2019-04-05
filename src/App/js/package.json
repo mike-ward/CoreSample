@@ -7,7 +7,7 @@
   "scripts": {
     "watch": "npx webpack -d --watch",
     "test": "jest",
-    "west": "jest --watch",
+    "jest": "jest --watch",
     "build-Debug": "npx webpack -d",
     "build-debug": "npm run build-Debug",
     "build-Release": "npx webpack -p --devtool=source-map",

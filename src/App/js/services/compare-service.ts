@@ -1,82 +1,67 @@
-﻿export function naturalStringCompare(a: string, b: string): number {
+﻿export function naturalStringCompare(a: string | number, b: string | number): number {
   return naturalStringCompareImplementation(a, b, undefined);
 }
 
-export function naturalStringCompareIgnoreCase(a: string, b: string): number {
+export function naturalStringCompareIgnoreCase(a: string | number, b: string | number): number {
   return naturalStringCompareImplementation(a, b, { sensitivity: 'accent' });
 }
 
 const locale = 'en';
+const commas = /,/g;
 
-function naturalStringCompareImplementation(a: string, b: string, options: any): number {
-  if (a === null && b === null) return 0;
-  if (a === null) return -1;
+function naturalStringCompareImplementation(a: string | number, b: string | number, options: any): number {
+  if (a === null) return b === null ? 0 : -1;
   if (b === null) return 1;
 
-  if (isAlpha(a) && isAlpha(b)) return a.localeCompare(b, locale, options)
-  if (isNumeric(a) && isNumeric(b)) return +a - +b;
+  const an = typeof (a) === 'number' ? a : Number(a.replace(commas, ''));
+  const bn = typeof (b) === 'number' ? b : Number(b.replace(commas, ''));
+  if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+
+  let as = a.toString();
+  let bs = b.toString();
 
   while (true) {
-    const ac = getChunk(a);
-    const bc = getChunk(b);
+    if (as.length === 0 && bs.length === 0) return 0;
 
-    const compare = ac.isnum && bc.isnum
-      ? +ac.value - +bc.value
-      : ac.value.localeCompare(bc.value, locale, options);
+    const ac = getChunk(as);
+    const bc = getChunk(bs);
+
+    const compare = ac.finite && bc.finite
+      ? ac.num - bc.num
+      : ac.chars.localeCompare(bc.chars, locale, options);
 
     if (compare) return compare;
 
-    a = a.substring(ac.count);
-    b = b.substring(bc.count);
-    if (a.length === 0 && b.length === 0) return 0;
+    as = as.substring(ac.chars.length);
+    bs = bs.substring(bc.chars.length);
   }
 }
 
 const zero = 48;
 const nine = 57;
-const comma = 44;
 const decimal = 46;
 
 function getChunk(str: string) {
-  let count = 0;
   let chars = '';
-  let isnum: boolean;
+  let digits = false;
   let classified = false;
-  const len = str.length;
 
-  while (count < len) {
-    const ch = str.charAt(count++);
-    const code = ch.charCodeAt(0); // comparing numbers faster
+  for (const ch of str) {
+    const code = ch.charCodeAt(0);
+    const digit = code <= nine && code >= zero || code === decimal;
 
     if (classified) {
-      if (isnum && code === comma) continue;
-      const digitOrDecimal = code >= zero && code <= nine || code === decimal;
-      if (!isnum && digitOrDecimal || isnum && !digitOrDecimal) break;
+      if (digits !== digit) break;
     }
     else {
       classified = true;
-      isnum = code >= zero && code <= nine;
+      digits = digit;
     }
 
     chars += ch;
   }
 
-  return {
-    value: chars,
-    isnum: isnum && isNumeric(chars),
-    count: count
-  }
-}
-
-function isNumeric(n: string) {
-  return !isNaN(+n);
-}
-
-function isAlpha(s: string) {
-  const len = s.length;
-  for (let i = 0; i < len; ++i) {
-    const code = s.charCodeAt(i);
-    if (code >= zero && code <= nine) return false;
-  }
-  return true;
+  const num = digits ? Number(chars) : NaN;
+  const finite = digits && Number.isFinite(num);
+  return { chars, num, finite }
 }

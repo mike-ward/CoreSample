@@ -74,7 +74,7 @@ function createDataCell(row: IGridRow, col: IGridColumn, meta: any) {
 
   const renderedValue = col.cellRenderer
     ? col.cellRenderer(value, col, row, meta)
-    : value;
+    : value
 
   const tooltip = col.cellTooltip
     ? col.cellTooltip(value, renderedValue, col, row, meta)
