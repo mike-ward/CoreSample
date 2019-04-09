@@ -1,6 +1,7 @@
 ﻿import { naturalStringCompareIgnoreCase } from './compare-service';
 
 export interface IFilter {
+  id: string;
   pull: (values: any) => any;
   comparer?: (a: any, b: any) => number;
   operator:
