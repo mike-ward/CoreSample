@@ -15,7 +15,10 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
 
   const an = typeof (a) === 'number' ? a : Number(a.replace(commas, ''));
   const bn = typeof (b) === 'number' ? b : Number(b.replace(commas, ''));
-  if (Number.isFinite(an) && Number.isFinite(bn)) return an - bn;
+  if (Number.isFinite(an) && Number.isFinite(bn)) {
+    const cmp = an - bn;
+    return cmp < 0 ? -1 : cmp > 0 ? 1 : 0;
+  }
 
   let as = a.toString();
   let bs = b.toString();
@@ -30,7 +33,7 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
       ? ac.num - bc.num
       : ac.chars.localeCompare(bc.chars, locale, options);
 
-    if (compare) return compare;
+    if (compare) return compare > 0 ? 1 : -1;
 
     as = as.substring(ac.chars.length);
     bs = bs.substring(bc.chars.length);
