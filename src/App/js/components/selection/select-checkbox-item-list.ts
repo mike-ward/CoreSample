@@ -25,7 +25,7 @@ export const selectCheckboxItemList: m.FactoryComponent<ISelectCheckboxItemListA
     }
 
     return m('.selectCheckboxItemList',
-      { onchange: model.onchange ? model.onchange(model) : undefined },
+      { onchange: () => model.onchange ? model.onchange(model) : undefined },
       m(checkboxItem, { model: selectAllModel }),
       m(checkboxItemList, { model: model.items })
     );

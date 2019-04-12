@@ -4,6 +4,7 @@ export interface IFilter {
   id: string;
   pull: (values: any) => any;
   comparer?: (a: any, b: any) => number;
+  exclude: boolean;
   operator:
   '$includes'
   | '$excludes'
@@ -17,7 +18,6 @@ export interface IFilter {
   | '$ends-with'
   | '$in-range';
   arg: any;
-  exclude: boolean;
 }
 
 export function filterFactory(filter: IFilter) {
@@ -51,11 +51,15 @@ function test(
   return filter.exclude
     ? function (values: any) {
       const val = filter.pull(values);
-      return args.every(arg => !assert(comparer(val, arg)))
+      return args.length
+        ? args.every(arg => !assert(comparer(val, arg)))
+        : false;
     }
     : function (values: any) {
       const val = filter.pull(values);
-      return args.some(arg => assert(comparer(val, arg)))
+      return args.length
+        ? args.some(arg => assert(comparer(val, arg)))
+        : true;
     }
 }
 

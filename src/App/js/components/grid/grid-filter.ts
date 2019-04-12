@@ -28,42 +28,37 @@ function pickList(columnId: string, gridModel: stream.Stream<IGridModel>) {
   const items = Object.keys(list).sort(naturalStringCompare);
   const idx = getfilterIndex(columnId, gridModel());
   const filter = idx >= 0 ? gridModel().filters[idx] : null;
-  const selectAll = filter ? !filter.exclude : true;
+  const selectAll = !filter || !filter.exclude;
 
-  const selectBoxItemsList: ISelectCheckboxItemList = {
+  const selectBoxItemsListModel: ISelectCheckboxItemList = {
     selectAll: selectAll,
     onchange: (selectCheckboxItemList: ISelectCheckboxItemList) => addOrUpdateFilter(selectCheckboxItemList, filter, columnId, gridModel),
     items: items.map(item => ({
       name: item,
       value: item,
-      checked: filter ? (checkedState(name, filter) && filter.exclude) : selectAll
+      checked: filter ? (filter.arg.indexOf(item) >= 0 ? !filter.exclude : filter.exclude ) : selectAll
     }))
   }
-
-  return selectBoxItemsList;
+  7
+  console.dir(selectBoxItemsListModel)
+  return selectBoxItemsListModel;
 }
 
 function addOrUpdateFilter(selectCheckboxItemList: ISelectCheckboxItemList, filter: IFilter, columnId: string, gridModel: stream.Stream<IGridModel>): void {
   const updatedFilter = filter || {} as IFilter;
   updatedFilter.id = columnId;
-  updatedFilter.comparer = filter ? filter.comparer : null;
+  updatedFilter.comparer = null; // todo: use column comparer 
   updatedFilter.pull = (row: IGridRow) => row[columnId]
+  updatedFilter.operator = '$eq';
+
   updatedFilter.exclude = !selectCheckboxItemList.selectAll;
-  updatedFilter.operator = filter ? filter.operator : '$includes';
-  updatedFilter.arg = selectCheckboxItemList.items.reduce((a, c) => {
-    if (c.checked !== updatedFilter.exclude) a.push(c);
-    return a;
-  }, []);
+  updatedFilter.arg = selectCheckboxItemList.items
+    .filter(item => updatedFilter.exclude ? !item.checked : item.checked)
+    .map(item => item.name);
 
-  console.log(updatedFilter)
   const gm = gridModel();
-  //gm.filters = [updatedFilter];
+  gm.filters = [updatedFilter];
   gridModel(gm);
-}
-
-function checkedState(name: string, filter: IFilter) {
-  const item = Array.isArray(filter.arg) ? filter.arg.find(f => f === name) : null;
-  return item != null;
 }
 
 function getfilterIndex(columnId: string, gridModel: IGridModel) {

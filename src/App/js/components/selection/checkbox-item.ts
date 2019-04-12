@@ -13,7 +13,6 @@ export interface ICheckboxItemAttrs extends m.Attributes {
 }
 
 export const checkboxItem: m.FactoryComponent<ICheckboxItemAttrs> = () => {
-
   return {
     view: vn => render(vn.attrs.model)
   }
@@ -23,7 +22,7 @@ function render(item: ICheckboxItem) {
   return m('',
     m('label.checkbox',
       renderCheckbox(item)),
-      constants.html.nbsp + item.name
+    constants.html.nbsp + item.name
   );
 }
 

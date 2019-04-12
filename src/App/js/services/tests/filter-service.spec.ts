@@ -4,6 +4,11 @@ import { IGridModel, IGridRow } from "../../components/grid/grid-types";
 
 const gm = model();
 
+test('empty filter does nothing', () => {
+  expect(filtering(gm, f('companyName', '$includes', [], false)).length).toBe(10);
+  expect(filtering(gm, f('companyName', '$eq', [], false)).length).toBe(10);
+})
+
 test('filter includes', () => {
   expect(filtering(gm, f('companyName', '$includes', ' inc.', false)).length).toBe(6);
   expect(filtering(gm, f('companyName', '$includes', ' inc.', true)).length).toBe(4);
