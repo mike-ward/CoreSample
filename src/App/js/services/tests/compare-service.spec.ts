@@ -15,4 +15,5 @@ test('naturalStringComparer should understand embedded numbers', () => {
   expect(naturalStringCompare(null, null)).toBe(0);
   expect(naturalStringCompare(28, 29)).toBeLessThan(0);
   expect(naturalStringCompare(28, '29')).toBeLessThan(0);
+  expect(naturalStringCompare('Day -7', 'Day 12')).toBeLessThan(0);
 })

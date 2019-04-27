@@ -53,7 +53,7 @@ function test(
       const val = filter.pull(values);
       return args.length
         ? args.every(arg => !assert(comparer(val, arg)))
-        : false;
+        : true;
     }
     : function (values: any) {
       const val = filter.pull(values);

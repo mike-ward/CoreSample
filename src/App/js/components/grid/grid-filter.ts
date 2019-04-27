@@ -36,24 +36,32 @@ function pickList(columnId: string, gridModel: stream.Stream<IGridModel>) {
     items: items.map(item => ({
       name: item,
       value: item,
-      checked: filter ? (filter.arg.indexOf(item) >= 0 ? !filter.exclude : filter.exclude ) : selectAll
+      checked: filter
+        ? (filter.arg.indexOf(item) >= 0
+          ? filter.exclude
+          : !filter.exclude)
+        : selectAll
     }))
   }
-  7
-  console.dir(selectBoxItemsListModel)
+
   return selectBoxItemsListModel;
 }
 
-function addOrUpdateFilter(selectCheckboxItemList: ISelectCheckboxItemList, filter: IFilter, columnId: string, gridModel: stream.Stream<IGridModel>): void {
+function addOrUpdateFilter(
+  selectCheckboxItemList: ISelectCheckboxItemList,
+  filter: IFilter,
+  columnId: string,
+  gridModel: stream.Stream<IGridModel>): void {
+  //
   const updatedFilter = filter || {} as IFilter;
   updatedFilter.id = columnId;
-  updatedFilter.comparer = null; // todo: use column comparer 
+  updatedFilter.comparer = null; // todo: use column comparer
   updatedFilter.pull = (row: IGridRow) => row[columnId]
   updatedFilter.operator = '$eq';
 
   updatedFilter.exclude = !selectCheckboxItemList.selectAll;
   updatedFilter.arg = selectCheckboxItemList.items
-    .filter(item => updatedFilter.exclude ? !item.checked : item.checked)
+    .filter(item => updatedFilter.exclude ? item.checked : !item.checked)
     .map(item => item.name);
 
   const gm = gridModel();
