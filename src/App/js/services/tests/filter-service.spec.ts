@@ -10,15 +10,15 @@ test('empty filter does nothing', () => {
 })
 
 test('filter includes', () => {
-  expect(filtering(gm, f('companyName', '$includes', ' inc.', false)).length).toBe(6);
-  expect(filtering(gm, f('companyName', '$includes', ' inc.', true)).length).toBe(4);
-  expect(filtering(gm, f('week52High', '$includes', '.75', false)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$includes', ' inc.', false)).length).toBe(4);
+  expect(filtering(gm, f('companyName', '$includes', ' inc.', true)).length).toBe(6);
+  expect(filtering(gm, f('week52High', '$includes', '.75', false)).length).toBe(9);
 });
 
 test('filter excludes', () => {
-  expect(filtering(gm, f('companyName', '$excludes', ' inc.', false)).length).toBe(4);
-  expect(filtering(gm, f('companyName', '$excludes', ' inc.', true)).length).toBe(6);
-  expect(filtering(gm, f('week52High', '$excludes', '.75', false)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$excludes', ' inc.', false)).length).toBe(6);
+  expect(filtering(gm, f('companyName', '$excludes', ' inc.', true)).length).toBe(4);
+  expect(filtering(gm, f('week52High', '$excludes', '.75', false)).length).toBe(1);
 });
 
 test('filter equals', () => {
