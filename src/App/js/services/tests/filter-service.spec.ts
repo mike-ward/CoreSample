@@ -22,53 +22,53 @@ test('filter excludes', () => {
 });
 
 test('filter equals', () => {
-  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', false)).length).toBe(1);
-  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', true)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', false)).length).toBe(9);
+  expect(filtering(gm, f('companyName', '$eq', 'Overstock.com Inc.', true)).length).toBe(1);
 });
 
 test('filter with multiple arguments', () => {
-  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], false)).length).toBe(2);
-  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], true)).length).toBe(8);
+  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], false)).length).toBe(8);
+  expect(filtering(gm, f('companyName', '$eq', ['Scholar Rock Holding Corporation', 'Overstock.com Inc.'], true)).length).toBe(2);
 });
 
 test('filter not equals', () => {
-  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', false)).length).toBe(9);
-  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', true)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', false)).length).toBe(1);
+  expect(filtering(gm, f('companyName', '$neq', 'Overstock.com Inc.', true)).length).toBe(9);
 });
 
 test('filter less than', () => {
-  expect(filtering(gm, f('latestPrice', '$lt', '25', false)).length).toBe(7);
-  expect(filtering(gm, f('latestPrice', '$lt', '25', true)).length).toBe(3);
+  expect(filtering(gm, f('latestPrice', '$lt', '25', false)).length).toBe(3);
+  expect(filtering(gm, f('latestPrice', '$lt', '25', true)).length).toBe(7);
 });
 
 test('filter greater than', () => {
-  expect(filtering(gm, f('latestPrice', '$gt', '25', false)).length).toBe(2);
-  expect(filtering(gm, f('latestPrice', '$gt', '25', true)).length).toBe(8);
+  expect(filtering(gm, f('latestPrice', '$gt', '25', false)).length).toBe(8);
+  expect(filtering(gm, f('latestPrice', '$gt', '25', true)).length).toBe(2);
 });
 
 test('filter less than or equal', () => {
-  expect(filtering(gm, f('latestPrice', '$lte', '25', false)).length).toBe(8);
-  expect(filtering(gm, f('latestPrice', '$lte', '25', true)).length).toBe(2);
+  expect(filtering(gm, f('latestPrice', '$lte', '25', false)).length).toBe(2);
+  expect(filtering(gm, f('latestPrice', '$lte', '25', true)).length).toBe(8);
 });
 
 test('filter greater than or equal', () => {
   const gm = model();
-  expect(filtering(gm, f('latestPrice', '$gte', '25', false)).length).toBe(3);
-  expect(filtering(gm, f('latestPrice', '$gte', '25', true)).length).toBe(7);
+  expect(filtering(gm, f('latestPrice', '$gte', '25', false)).length).toBe(7);
+  expect(filtering(gm, f('latestPrice', '$gte', '25', true)).length).toBe(3);
 });
 
 test('filter starts with', () => {
-  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', false)).length).toBe(9);
-  expect(filtering(gm, f('primaryExchange', '$starts-with', 'nAsDAq', false)).length).toBe(9);
-  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', true)).length).toBe(1);
-  expect(filtering(gm, f('primaryExchange', '$starts-with', 'XASDAQ', false)).length).toBe(0);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', false)).length).toBe(1);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'nAsDAq', false)).length).toBe(1);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'NASDAQ', true)).length).toBe(9);
+  expect(filtering(gm, f('primaryExchange', '$starts-with', 'XASDAQ', false)).length).toBe(10);
 });
 
 test('filter ends with', () => {
-  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', false)).length).toBe(2);
-  expect(filtering(gm, f('primaryExchange', '$ends-with', 'market', false)).length).toBe(2);
-  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', true)).length).toBe(8);
-  expect(filtering(gm, f('primaryExchange', '$ends-with', 'arkets', false)).length).toBe(0);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', false)).length).toBe(8);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'market', false)).length).toBe(8);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'Market', true)).length).toBe(2);
+  expect(filtering(gm, f('primaryExchange', '$ends-with', 'arkets', false)).length).toBe(10);
 });
 
 function filtering(gm: IGridModel, filter: IFilter) {
