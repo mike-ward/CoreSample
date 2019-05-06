@@ -6,7 +6,7 @@ import { IGridAttrs, IGridModel, IGridViewCell, IGridViewColumn, IGridViewModel 
 import { gridViewModel } from './grid-view-model';
 
 export const gridStyles =
-  `div.app-grid                            { overflow-x: auto }
+  `div.app-grid                            {  }
    table.app-grid                          { border:1px; border-collapse:collapse }
    .app-grid th, .app-grid td              { white-space: nowrap; padding: .2rem; text-align: left; border: 1px solid #eee }
    .app-grid th                            { padding-bottom: .3rem;

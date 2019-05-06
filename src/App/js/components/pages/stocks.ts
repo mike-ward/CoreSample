@@ -1,13 +1,15 @@
 ﻿import m from 'mithril';
 import stream from 'mithril/stream';
 import { camelIdentifierToTitle } from '../../services/convert-service';
+import { cssStylesAdd } from '../../services/css-service';
 import { gridToExcel } from '../../services/export-excel-service';
 import { grid } from '../grid/grid';
 import { IGridColumn, IGridModel } from '../grid/grid-types';
 import { loading } from '../loading/loading';
-import { cssStylesAdd } from '../../services/css-service';
 
-cssStylesAdd(`div.stocks .app-grid { font-size:small }`);
+cssStylesAdd(
+  `div.stocks .app-grid { font-size:small; }
+   div.stocks thead     { position: sticky; top: -1px; }`);
 
 export const stocks: m.FactoryComponent = () => {
   let model: IModel;
@@ -27,8 +29,8 @@ export const stocks: m.FactoryComponent = () => {
       m('p', `Count: ${model.stocks() ? model.stocks().rows.length : 0}`),
       model.stocks()
         ? m('',
-            exportButton(),
-            m(grid, { model: model.stocks })
+          exportButton(),
+          m(grid, { model: model.stocks })
         )
         : m(loading));
   }

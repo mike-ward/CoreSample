@@ -15,6 +15,7 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
 
   const an = typeof (a) === 'number' ? a : Number(a.replace(commas, ''));
   const bn = typeof (b) === 'number' ? b : Number(b.replace(commas, ''));
+
   if (Number.isFinite(an) && Number.isFinite(bn)) {
     const cmp = an - bn;
     return cmp < 0 ? -1 : cmp > 0 ? 1 : 0;
@@ -42,6 +43,7 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
 
 const zero = 48;
 const nine = 57;
+const minus = 45;
 const decimal = 46;
 
 function getChunk(str: string) {
@@ -54,9 +56,9 @@ function getChunk(str: string) {
     const digit = code <= nine && code >= zero || code === decimal;
 
     if (classified) {
-      if (digits !== digit) break;
+      if (digits !== digit || code === minus) break;
     }
-    else {
+    else if (code !== minus) {
       classified = true;
       digits = digit;
     }

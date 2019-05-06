@@ -52,13 +52,13 @@ function test(
     ? function (values: any) {
       const val = filter.pull(values);
       return args.length
-        ? args.every(arg => !assert(comparer(val, arg)))
-        : false;
+        ? args.some(arg => assert(comparer(val, arg)))
+        : true;
     }
     : function (values: any) {
       const val = filter.pull(values);
       return args.length
-        ? args.some(arg => assert(comparer(val, arg)))
+        ? args.every(arg => !assert(comparer(val, arg)))
         : true;
     }
 }
