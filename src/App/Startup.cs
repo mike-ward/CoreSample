@@ -18,6 +18,7 @@ namespace CoreSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCarter();
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

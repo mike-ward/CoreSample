@@ -8,8 +8,12 @@ namespace App.Modules
 {
     public class MarketsModule : CarterModule
     {
-        public MarketsModule() : base("api/markets")
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public MarketsModule(IHttpClientFactory httpClientFactory) : base("api/markets")
         {
+            this._httpClientFactory = httpClientFactory;
+
             Get("news", async (ctx) => await Api(ctx, "https://api.iextrading.com/1.0/stock/aapl/news"));
 
             Get("most-active", async (ctx) => await Api(ctx, "https://api.iextrading.com/1.0/stock/market/list/mostactive"));
@@ -21,9 +25,9 @@ namespace App.Modules
             Get("symbols", async (ctx) => await Api(ctx, "https://api.iextrading.com/1.0/ref-data/symbols"));
         }
 
-        private static async Task Api(HttpContext ctx, string url)
+        private async Task Api(HttpContext ctx, string url)
         {
-            var client = HttpClientFactory.Create();
+            var client = _httpClientFactory.CreateClient();
             var data = await client.GetStringAsync(new Uri(url));
             if (data is null) throw new InvalidProgramException("oops");
             ctx.Response.ContentType = "application/json";
