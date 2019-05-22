@@ -14,11 +14,14 @@ function naturalStringCompareImplementation(a: string | number, b: string | numb
   if (b === null) return 1;
 
   const an = typeof (a) === 'number' ? a : Number(a.replace(commas, ''));
-  const bn = typeof (b) === 'number' ? b : Number(b.replace(commas, ''));
 
-  if (Number.isFinite(an) && Number.isFinite(bn)) {
-    const cmp = an - bn;
-    return cmp < 0 ? -1 : cmp > 0 ? 1 : 0;
+  if (Number.isFinite(an)) {
+    const bn = typeof (b) === 'number' ? b : Number(b.replace(commas, ''));
+
+    if (Number.isFinite(bn)) {
+      const cmp = an - bn;
+      return cmp < 0 ? -1 : cmp > 0 ? 1 : 0;
+    }
   }
 
   let as = a.toString();
