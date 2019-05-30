@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "npx webpack -d --watch",
-    "test": "jest",
+    "test": "ospec ../tsout/**/*.spec.js",
     "jest": "jest --watch",
     "build-Debug": "npx webpack -d",
     "build-debug": "npm run build-Debug",
