@@ -19,14 +19,14 @@ export function buildRoutes() {
   m.route(root, '',
     {
       // Pages
-      '': plain(splash, 'Splash'),
-      'news': auth(page(news, 'News')),
-      'markets': auth(page(markets, 'Markets')),
-      'stocks': auth(page(stocks, 'Stocks')),
-      'modals': auth(page(modals, 'Modals')),
+      '/': plain(splash, 'Splash'),
+      '/news': auth(page(news, 'News')),
+      '/markets': auth(page(markets, 'Markets')),
+      '/stocks': auth(page(stocks, 'Stocks')),
+      '/modals': auth(page(modals, 'Modals')),
 
       // Account
-      'account/login': login
+      '/account/login': login
     });
 }
 

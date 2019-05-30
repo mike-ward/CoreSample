@@ -24,7 +24,7 @@
     "bulma": "0.7.5",
     "glob": "7.1.4",
     "jest": "24.1.0",
-    "mithril": "2.0.0-rc.4",
+    "mithril": "2.0.0-rc.5",
     "mithril-query": "2.5.2",
     "ts-jest": "24.0.2",
     "ts-loader": "6.0.1",
