@@ -1,4 +1,5 @@
 tsout/
+jsout/
 src/App/js/.cache/*
 src/App/wwwroot/app.*
 .vscode/

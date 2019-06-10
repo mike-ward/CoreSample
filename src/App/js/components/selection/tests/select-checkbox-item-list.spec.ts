@@ -1,8 +1,9 @@
-﻿import mq from 'mithril-query';
+﻿import o from 'mithril/ospec';
+import mq from 'mithril-query';
 import '../../../browser-mock';
 import { selectCheckboxItemList } from '../select-checkbox-item-list';
 
-test('selectChecboxItemList should contains selectAll checkbox and items', () => {
+o('selectChecboxItemList should contains selectAll checkbox and items', () => {
   const model = {
     selectAll: true,
     items: [

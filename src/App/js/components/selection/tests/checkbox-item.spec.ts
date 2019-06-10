@@ -1,9 +1,10 @@
-﻿import mq from 'mithril-query';
+﻿import o from 'mithril/ospec';
+import mq from 'mithril-query';
 import '../../../browser-mock';
 import constants from '../../../services/constants-service';
 import { checkboxItem, ICheckboxItem } from '../checkbox-item';
 
-test('checkboxItem should have label and checkbox', () => {
+o('checkboxItem should have label and checkbox', () => {
   const item = {
     name: 'item',
     value: 'value',

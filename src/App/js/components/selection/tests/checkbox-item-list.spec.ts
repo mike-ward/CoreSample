@@ -1,8 +1,9 @@
-﻿import mq from 'mithril-query';
+﻿import o from 'mithril/ospec';
+import mq from 'mithril-query';
 import '../../../browser-mock';
 import { checkboxItemList } from '../checkbox-item-list';
 
-test('checkboxItemList should contain list of checkbox items', () => {
+o('checkboxItemList should contain list of checkbox items', () => {
   const items = [
     { name: 'item1', value: 'value1', checked: false },
     { name: 'item2', value: 'value2', checked: true },

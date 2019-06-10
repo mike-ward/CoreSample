@@ -1,6 +1,7 @@
-﻿import clone from '../clone-service';
+﻿import o from 'mithril/ospec';
+import clone from '../clone-service';
 
-test('object with array', () => {
+o('object with array', () => {
   const garfield = {
     name: 'Garfield',
     date: Date.now(),
@@ -9,14 +10,14 @@ test('object with array', () => {
 
   garfield.favoriteFoods = ['lasagna', 'hamburgers', 'doughnuts', 'cake'];
   const garfieldClone = clone(garfield);
-  expect(garfield).toEqual(garfieldClone);
+  o(garfield).notEquals(garfieldClone);
 
   garfield.name = 'Dopy';
   garfield.favoriteFoods[0] = 'candy';
-  expect(garfield).not.toEqual(garfieldClone)
+  o(garfield).notEquals(garfieldClone)
 })
 
-test('cyclic test', () => {
+o('cyclic test', () => {
   var copyme = {} as any;
   var child = {} as any;
   var grandchild = {} as any;
@@ -30,5 +31,6 @@ test('cyclic test', () => {
   copyme.thing = child;
   const copied = clone(copyme);
 
-  expect(copyme).toEqual(copied);
+  // deepEquals can't handle recursion
+  o(copied.thing.child.parent).notEquals(null);
 })

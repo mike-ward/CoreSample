@@ -1,4 +1,4 @@
-﻿declare var __BUILD__: string
+﻿//declare var __BUILD__: string
 
 export default {
   appTitle: 'My Application',
@@ -16,5 +16,5 @@ export default {
     nbsp: '\u00A0'
   },
   copyright: '© 2019 Some Entity',
-  version: '0.1.' + __BUILD__
+  version: '0.1.'// + __BUILD__
 }

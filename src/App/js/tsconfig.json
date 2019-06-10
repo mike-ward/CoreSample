@@ -6,7 +6,7 @@
     "outDir": "../tsout",
     "alwaysStrict": true,
     "noImplicitAny": true,
-    "noImplicitThis": true,
+    "noImplicitThis": false,
     "noUnusedLocals": true,
     "removeComments": true,
     "noImplicitReturns": true,

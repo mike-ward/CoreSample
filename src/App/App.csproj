@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="js\jsout\**" />
     <Compile Remove="tsout\**" />
+    <Content Remove="js\jsout\**" />
     <Content Remove="tsout\**" />
+    <EmbeddedResource Remove="js\jsout\**" />
     <EmbeddedResource Remove="tsout\**" />
+    <None Remove="js\jsout\**" />
     <None Remove="tsout\**" />
   </ItemGroup>
 
@@ -45,6 +49,7 @@
     <None Remove="js\components\selection\tests\checkbox-item-list.spec.ts" />
     <None Remove="js\components\selection\tests\checkbox-item.spec.ts" />
     <None Remove="js\components\selection\tests\select-checkbox-item-list.spec.ts" />
+    <None Remove="js\ospec.ts" />
     <None Remove="js\services\app-service.ts" />
     <None Remove="js\services\clone-service.ts" />
     <None Remove="js\services\compare-service.ts" />
@@ -62,6 +67,7 @@
     <None Remove="js\services\tests\clone-service.spec.ts" />
     <None Remove="js\services\tests\compare-service.spec.ts" />
     <None Remove="js\typings\browser-mock.d.ts" />
+    <None Remove="js\typings\ospec.d.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -114,6 +120,7 @@
     <TypeScriptCompile Include="js\services\tests\clone-service.spec.ts" />
     <TypeScriptCompile Include="js\services\tests\compare-service.spec.ts" />
     <TypeScriptCompile Include="js\typings\browser-mock.d.ts" />
+    <TypeScriptCompile Include="js\typings\ospec.d.ts" />
   </ItemGroup>
 
   <ItemGroup>
